@@ -1,4 +1,4 @@
-package pt.eden.hbs;
+package pt.eden.hbs.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
