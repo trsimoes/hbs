@@ -11,9 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public class ScheduledTasks {
+public class SchedulerService {
 
-    private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
+    private static final Logger log = LoggerFactory.getLogger(SchedulerService.class);
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
