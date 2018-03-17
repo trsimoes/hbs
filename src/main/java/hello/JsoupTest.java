@@ -19,10 +19,32 @@ public class JsoupTest {
 
     public static void main(String[] args) throws IOException {
         JsoupTest app = new JsoupTest();
-        app.testGitHub();
+        //app.testGitHub();
+        app.testBank();
     }
 
-    private void testBank() {
+    private void testBank() throws IOException {
+        final String USER_AGENT = "\"Mozilla/5.0 (Windows NT\" +\n"
+                + "          \" 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.120 Safari/535.2\"";
+        String loginFormUrl = "https://www.particulares.santandertotta.pt/pagina/indice/0,,276_1_2,00.html"
+                + "0.shtml?usr=Nome+de+Utilizador";
+        String loginActionUrl = "https://www.particulares.santandertotta.pt/bepp/sanpt/usuarios/login/?";
+
+        HashMap<String, String> cookies = new HashMap<>();
+        HashMap<String, String> formData = new HashMap<>();
+
+        Connection.Response loginForm = Jsoup.connect(loginFormUrl)
+                .method(Connection.Method.GET)
+                .userAgent(USER_AGENT)
+                .ignoreContentType(true)
+                .followRedirects(true)
+                .execute();
+        Document loginDoc = loginForm.parse(); // this is the document that contains response html
+
+        cookies.putAll(loginForm.cookies()); // save the cookies, this will be passed on to next request
+        /**
+         * Get the value of authenticity_token with the CSS selector we saved before
+         **/
 
     }
 
