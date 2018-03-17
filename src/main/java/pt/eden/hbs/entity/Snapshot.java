@@ -50,4 +50,10 @@ public class Snapshot {
     public void setCreditBalance(Long creditBalance) {
         this.creditBalance = creditBalance;
     }
+
+    @Override
+    public String toString() {
+        return "Snapshot{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance=" + accountBalance
+                + ", creditBalance=" + creditBalance + '}';
+    }
 }
