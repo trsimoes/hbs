@@ -18,6 +18,7 @@ class SnapshotController {
 
     @RequestMapping("/snapshot")
     String execute() {
+
         final Iterable<Snapshot> all = this.snapshotRepository.findAll();
         StringBuilder result = new StringBuilder();
         for (Snapshot snapshot : all) {

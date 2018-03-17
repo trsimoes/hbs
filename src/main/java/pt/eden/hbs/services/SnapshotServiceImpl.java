@@ -25,9 +25,23 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public void takeSnapshot() {
-        log.info("Getting details from Home Banking server");
+
+        if (log.isDebugEnabled()) {
+            log.debug("Getting details from Home Banking server");
+        }
+
         final Snapshot snapshot = this.homeBankingService.getCurrentDetails();
+
+        if (log.isTraceEnabled()) {
+            log.trace("Details from Bank: " + snapshot.toString());
+        }
+
         snapshot.setCreateDateTime(LocalDateTime.now());
+
+        if (log.isTraceEnabled()) {
+            log.trace("Saving snapshot to database: " + snapshot.toString());
+        }
+
         this.snapshotRepository.save(snapshot);
     }
 }

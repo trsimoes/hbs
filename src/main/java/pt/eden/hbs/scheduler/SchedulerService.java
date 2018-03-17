@@ -26,7 +26,9 @@ public class SchedulerService {
 //    @Scheduled(cron = "0 12,23 * * *")
     @Scheduled(fixedRate = 10000)
     public void reportCurrentTime() {
-        log.info("Taking a snapshot at {}", dateFormat.format(new Date()));
+        if (log.isTraceEnabled()) {
+            log.trace("Taking a snapshot at {}", dateFormat.format(new Date()));
+        }
         this.snapshotService.takeSnapshot();
     }
 }
