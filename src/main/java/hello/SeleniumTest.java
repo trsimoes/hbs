@@ -28,10 +28,10 @@ public class SeleniumTest {
         FirefoxBinary firefoxBinary = new FirefoxBinary();
         firefoxBinary.addCommandLineOptions("--headless");
         FirefoxOptions firefoxOptions = new FirefoxOptions();
-//        firefoxOptions.setBinary(firefoxBinary);
+        firefoxOptions.setBinary(firefoxBinary);
         WebDriver driver = new FirefoxDriver(firefoxOptions);
 
-//        app.test(driver);
+        //        app.test(driver);
         app.bank(driver);
     }
 
@@ -45,10 +45,23 @@ public class SeleniumTest {
             password_editbox.sendKeys("xxx");
             submit_button.click();
 
-            final WebElement ws = driver.findElement(By.name("ws"));
+            driver.navigate().to(
+                    "https://www.particulares.santandertotta.pt/bepp/sanpt/cuentas/listadomovimientoscuenta/0,,,0.shtml?trxId=201803180025635064");
+            String accountBalance = driver.findElement(
+                    By.xpath("/html/body/form[3]/div[7]/div[2]/table/tbody/tr/td[4]/span")).getText();
 
-            String text = driver.findElement(By.xpath("//div[@class='resumo_saldo']/table/tbody/tr/td[1]/span"))
+            driver.navigate().to(
+                    "https://www.particulares.santandertotta.pt/bepp/sanpt/tarjetas/posiciontarjetas/0,,,0.shtml?bf=9&nuevo=si&trxId=201803180025635545");
+            String creditLimit = driver.findElement(By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[3]"))
                     .getText();
+            String remainingCredit = driver.findElement(
+                    By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[4]")).getText();
+
+            System.out.println("-- Account ---");
+            System.out.println("\tBalance: " + accountBalance);     // 100,05 EUR
+            System.out.println("--- Card ---");
+            System.out.println("\tLimit: " + creditLimit);          // 1.000,00 EUR
+            System.out.println("\tRemaining: " + remainingCredit);
         } finally {
             driver.close();
         }
@@ -80,6 +93,5 @@ public class SeleniumTest {
         // closeBrowser
         driver.close();
     }
-
 
 }
