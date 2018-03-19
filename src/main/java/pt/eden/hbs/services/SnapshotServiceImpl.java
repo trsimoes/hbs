@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.eden.hbs.entity.Snapshot;
+import pt.eden.hbs.exceptions.HomeBankingException;
 import pt.eden.hbs.persistence.SnapshotRepository;
 
 import java.time.LocalDateTime;
@@ -26,22 +27,26 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public void takeSnapshot() {
 
-        if (log.isDebugEnabled()) {
-            log.debug("Getting details from Home Banking server");
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("Getting details from Home Banking server");
+            }
+
+            final Snapshot snapshot = this.homeBankingService.getCurrentDetails();
+
+            if (log.isTraceEnabled()) {
+                log.trace("Details from Bank: " + snapshot.toString());
+            }
+
+            snapshot.setCreateDateTime(LocalDateTime.now());
+
+            if (log.isTraceEnabled()) {
+                log.trace("Saving snapshot to database: " + snapshot.toString());
+            }
+
+            this.snapshotRepository.save(snapshot);
+        } catch (HomeBankingException e) {
+            log.error("Error getting snapshot", e);
         }
-
-        final Snapshot snapshot = this.homeBankingService.getCurrentDetails();
-
-        if (log.isTraceEnabled()) {
-            log.trace("Details from Bank: " + snapshot.toString());
-        }
-
-        snapshot.setCreateDateTime(LocalDateTime.now());
-
-        if (log.isTraceEnabled()) {
-            log.trace("Saving snapshot to database: " + snapshot.toString());
-        }
-
-        this.snapshotRepository.save(snapshot);
     }
 }

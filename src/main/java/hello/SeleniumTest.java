@@ -28,14 +28,14 @@ public class SeleniumTest {
         FirefoxBinary firefoxBinary = new FirefoxBinary();
         firefoxBinary.addCommandLineOptions("--headless");
         FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.setBinary(firefoxBinary);
+//        firefoxOptions.setBinary(firefoxBinary);
         WebDriver driver = new FirefoxDriver(firefoxOptions);
 
         //        app.test(driver);
         app.bank(driver);
     }
 
-    public void bank(WebDriver driver) throws IOException {
+    private void bank(WebDriver driver) throws IOException {
         try {
             driver.navigate().to("https://www.particulares.santandertotta.pt/bepp/sanpt/usuarios/login/?");
             WebElement userName_editbox = driver.findElement(By.id("identificacionUsuario"));
@@ -62,6 +62,11 @@ public class SeleniumTest {
             System.out.println("--- Card ---");
             System.out.println("\tLimit: " + creditLimit);          // 1.000,00 EUR
             System.out.println("\tRemaining: " + remainingCredit);
+
+            driver.navigate().to("https://www.particulares.santandertotta.pt//bepp/sanpt/usuarios/desconexion/0,,,"
+                    + "0.shtml?trxId=201803180025637992");
+            WebElement logoutButton = driver.findElement(By.xpath("//*[@id=\"exit\"]"));
+            logoutButton.click();
         } finally {
             driver.close();
         }

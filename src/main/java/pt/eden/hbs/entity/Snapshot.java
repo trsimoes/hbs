@@ -16,8 +16,8 @@ public class Snapshot {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private LocalDateTime createDateTime;
-    private Long accountBalance;
-    private Long creditBalance;
+    private Float accountBalance;
+    private Float creditBalance;
 
     public Long getId() {
         return id;
@@ -35,19 +35,19 @@ public class Snapshot {
         this.createDateTime = createDateTime;
     }
 
-    public Long getAccountBalance() {
+    public Float getAccountBalance() {
         return accountBalance;
     }
 
-    public void setAccountBalance(Long accountBalance) {
+    public void setAccountBalance(Float accountBalance) {
         this.accountBalance = accountBalance;
     }
 
-    public Long getCreditBalance() {
+    public Float getCreditBalance() {
         return creditBalance;
     }
 
-    public void setCreditBalance(Long creditBalance) {
+    public void setCreditBalance(Float creditBalance) {
         this.creditBalance = creditBalance;
     }
 
