@@ -11,10 +11,11 @@ import java.io.File;
 @SpringBootApplication
 @EnableScheduling
 public class Application {
-    public static void main(String[] args) {
-        final ApplicationConfigurations configurations = ApplicationConfigurations.getInstance();
-        final String driverPath = configurations.get("webdriver.gecko.driverPath");
 
+    public static void main(String[] args) {
+
+        final ApplicationConfigurations configurations = ApplicationConfigurations.getInstance();
+        final String driverPath = configurations.get("webdriver.gecko.driver");
         if (!new File(driverPath).isFile()) {
             throw new IllegalArgumentException(
                     "The 'webdriver.gecko.driverPath' property points to an invalid " + "location: " + driverPath
@@ -22,7 +23,7 @@ public class Application {
         }
 
         if (StringUtils.isNotBlank(driverPath)) {
-            System.setProperty("webdriver.gecko.driverPath", driverPath);
+            System.setProperty("webdriver.gecko.driver", driverPath);
         } else {
             throw new IllegalArgumentException("The 'webdriver.gecko.driverPath' property is not correctly specified "
                     + "in the 'hbs.properties' file.");

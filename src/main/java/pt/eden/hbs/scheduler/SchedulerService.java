@@ -24,7 +24,7 @@ public class SchedulerService {
      * At minute 0 past hour 12 and 23.
      */
 //    @Scheduled(cron = "0 12,23 * * *")
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 30000)
     public void reportCurrentTime() {
         if (log.isTraceEnabled()) {
             log.trace("Taking a snapshot at {}", dateFormat.format(new Date()));

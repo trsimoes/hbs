@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +29,29 @@ public class HomeBankingServiceImpl implements HomeBankingService {
 
     @Override
     public Snapshot getCurrentDetails() throws HomeBankingException {
-
-        WebDriver driver = null;
         try {
-            driver = login();
-            return fetchInformation(driver);
+            if (log.isTraceEnabled()) {
+                log.trace("Get current details - start");
+            }
+            WebDriver driver = null;
+            try {
+                driver = login();
+                return fetchInformation(driver);
+            } finally {
+                logout(driver);
+            }
         } finally {
-            logout(driver);
+            if (log.isTraceEnabled()) {
+                log.trace("Get current details - end");
+            }
         }
     }
 
     private void logout(final WebDriver driver) {
         try {
+            if (log.isTraceEnabled()) {
+                log.trace("Logout - start");
+            }
             driver.navigate().to(BASE_URL + "/bepp/sanpt/usuarios/desconexion/0,,,0.shtml?trxId=201803180025637992");
             WebElement logoutButton = driver.findElement(By.xpath("//*[@id=\"exit\"]"));
             logoutButton.click();
@@ -47,71 +59,102 @@ public class HomeBankingServiceImpl implements HomeBankingService {
             if (driver != null) {
                 driver.close();
             }
+            if (log.isTraceEnabled()) {
+                log.trace("Logout - end");
+            }
         }
     }
 
     private Snapshot fetchInformation(final WebDriver driver) throws HomeBankingException {
+        try {
+            if (log.isTraceEnabled()) {
+                log.trace("Fetch Information - start");
+            }
+            final Snapshot snapshot = new Snapshot();
 
-        final Snapshot snapshot = new Snapshot();
+            // account
+            driver.navigate().to(
+                    BASE_URL + "/bepp/sanpt/cuentas/listadomovimientoscuenta/0,,,0.shtml?trxId=201803180025635064");
+            final String accountBalanceRaw = driver.findElement(
+                    By.xpath("/html/body/form[3]/div[7]/div[2]/table/tbody/tr/td[4]/span")).getText();
+            final Float accountBalance = convert("accountBalance", accountBalanceRaw);
+            snapshot.setAccountBalance(accountBalance);
 
-        // account
-        driver.navigate().to(
-                BASE_URL + "/bepp/sanpt/cuentas/listadomovimientoscuenta/0,,,0.shtml?trxId=201803180025635064");
-        final String accountBalanceRaw = driver.findElement(
-                By.xpath("/html/body/form[3]/div[7]/div[2]/table/tbody/tr/td[4]/span")).getText();
-        final Float accountBalance = convert("accountBalance", accountBalanceRaw);
-        snapshot.setAccountBalance(accountBalance);
+            // card
+            driver.navigate().to(
+                    BASE_URL + "/bepp/sanpt/tarjetas/posiciontarjetas/0,,,0.shtml?bf=9&nuevo=si&trxId=201803180025635545");
+            final String creditLimitRaw = driver.findElement(
+                    By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[3]")).getText();
+            final Float creditLimit = convert("creditLimit", creditLimitRaw);
 
-        // card
-        driver.navigate().to(
-                BASE_URL + "/bepp/sanpt/tarjetas/posiciontarjetas/0,,,0.shtml?bf=9&nuevo=si&trxId=201803180025635545");
-        final String creditLimitRaw = driver.findElement(
-                By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[3]")).getText();
-        final Float creditLimit = convert("creditLimit", creditLimitRaw);
+            final String remainingCreditRaw = driver.findElement(
+                    By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[4]")).getText();
+            final Float remainingCredit = convert("remainingCredit", remainingCreditRaw);
 
-        final String remainingCreditRaw = driver.findElement(
-                By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[4]")).getText();
-        final Float remainingCredit = convert("remainingCredit", remainingCreditRaw);
+            final Float creditBalance = creditLimit - remainingCredit;
+            snapshot.setCreditBalance(creditBalance);
 
-        final Float creditBalance = creditLimit - remainingCredit;
-        snapshot.setCreditBalance(creditBalance);
+            if (log.isTraceEnabled()) {
+                log.trace("---------------------------");
+                log.trace("Snapshot details");
+                log.trace("\taccountBalance: " + accountBalance);
+                log.trace("\tcreditLimit: " + creditLimit);
+                log.trace("\tremainingCredit: " + remainingCredit);
+                log.trace("\tcreditBalance: " + creditBalance);
+                log.trace("---------------------------");
+            }
 
-        if (log.isTraceEnabled()) {
-            log.trace("---------------------------");
-            log.trace("Snapshot details");
-            log.trace("\taccountBalance: " + accountBalance);
-            log.trace("\tcreditLimit: " + creditLimit);
-            log.trace("\tremainingCredit: " + remainingCredit);
-            log.trace("\tcreditBalance: " + creditBalance);
-            log.trace("---------------------------");
+            return snapshot;
+        } finally {
+            if (log.isTraceEnabled()) {
+                log.trace("Fetch Information - end");
+            }
         }
-
-        return snapshot;
     }
 
     private WebDriver login() {
-        final ApplicationConfigurations configurations = ApplicationConfigurations.getInstance();
-        final WebDriver driver = setupDriver();
+        try {
+            if (log.isTraceEnabled()) {
+                log.trace("Login - start");
+            }
 
-        String loginURL = BASE_URL + "/bepp/sanpt/usuarios/login/?";
-        driver.navigate().to(loginURL);
-        WebElement usernameText = driver.findElement(By.id("identificacionUsuario"));
-        WebElement passwordText = driver.findElement(By.id("claveConsultiva"));
-        WebElement submitButton = driver.findElement(By.xpath("//a[@id='login_button']"));
+            final ApplicationConfigurations configurations = ApplicationConfigurations.getInstance();
+            final WebDriver driver = setupDriver();
 
-        usernameText.sendKeys(configurations.get("home.banking.username"));
-        passwordText.sendKeys(configurations.get("home.banking.password"));
-        submitButton.click();
+            String loginURL = BASE_URL + "/bepp/sanpt/usuarios/login/?";
+            driver.navigate().to(loginURL);
+            WebElement usernameText = driver.findElement(By.id("identificacionUsuario"));
+            WebElement passwordText = driver.findElement(By.id("claveConsultiva"));
+            WebElement submitButton = driver.findElement(By.xpath("//a[@id='login_button']"));
 
-        return driver;
+            usernameText.sendKeys(configurations.get("home.banking.username"));
+            passwordText.sendKeys(configurations.get("home.banking.password"));
+            submitButton.click();
+
+            return driver;
+        } finally {
+            if (log.isTraceEnabled()) {
+                log.trace("Login - end");
+            }
+        }
     }
 
     private WebDriver setupDriver() {
-        FirefoxBinary firefoxBinary = new FirefoxBinary();
-        firefoxBinary.addCommandLineOptions("--headless");
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.setBinary(firefoxBinary);
-        return new FirefoxDriver(firefoxOptions);
+        try {
+            if (log.isTraceEnabled()) {
+                log.trace("Setup Driver - start");
+            }
+            FirefoxBinary firefoxBinary = new FirefoxBinary();
+            firefoxBinary.addCommandLineOptions("--headless");
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            firefoxOptions.setBinary(firefoxBinary);
+            firefoxOptions.setLogLevel(FirefoxDriverLogLevel.ERROR);
+            return new FirefoxDriver(firefoxOptions);
+        } finally {
+            if (log.isTraceEnabled()) {
+                log.trace("Setup Driver - end");
+            }
+        }
     }
 
     private Float convert(final String attribute, final String value) throws HomeBankingException {
