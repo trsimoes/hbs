@@ -17,6 +17,8 @@ import pt.eden.hbs.exceptions.CurrencyConversionException;
 import pt.eden.hbs.exceptions.HomeBankingException;
 import pt.eden.hbs.exceptions.UnexpectedCurrencyFormatException;
 
+import java.io.File;
+
 /**
  * @author : trsimoes
  */
@@ -144,7 +146,9 @@ public class HomeBankingServiceImpl implements HomeBankingService {
             if (log.isTraceEnabled()) {
                 log.trace("Setup Driver - start");
             }
-            FirefoxBinary firefoxBinary = new FirefoxBinary();
+
+            FirefoxBinary firefoxBinary = new FirefoxBinary(new File(ApplicationConfigurations.getInstance().get
+                    ("webdriver.gecko.driver")));
             firefoxBinary.addCommandLineOptions("--headless");
             FirefoxOptions firefoxOptions = new FirefoxOptions();
             firefoxOptions.setBinary(firefoxBinary);
