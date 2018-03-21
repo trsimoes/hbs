@@ -19,7 +19,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jdk8.home>C:\Program Files\Java\jdk1.8.0_60</jdk8.home>
-        <gecko.driver.path>c:\public\git\hbs\src\non-packaged-resources\geckodriver.exe</gecko.driver.path>
+        <gecko.driver.path>c:\public\git\hbs\src\main\non-packaged-resources\geckodriver.exe</gecko.driver.path>
     </properties>
 
     <profiles>
@@ -33,7 +33,7 @@
             </activation>
             <properties>
                 <jdk8.home>/usr/lib/jvm/java-8-oracle</jdk8.home>
-                <gecko.driver.path>/home/pi/hbs/src/non-packaged-resources/geckodriver</gecko.driver.path>
+                <gecko.driver.path>/home/pi/hbs/src/main/non-packaged-resources/geckodriver</gecko.driver.path>
             </properties>
         </profile>
     </profiles>
