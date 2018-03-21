@@ -19,7 +19,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jdk8.home>C:\Program Files\Java\jdk1.8.0_60</jdk8.home>
-        <gecko.driver.path>c:\public\git\hbs\src\main\non-packaged-resources\geckodriver.exe</gecko.driver.path>
+        <gecko.driver.path>C:\\public\\git\\hbs\\src\\main\\non-packaged-resources\\geckodriver.exe</gecko.driver.path>
     </properties>
 
     <profiles>
@@ -91,6 +91,5 @@
             <artifactId>selenium-htmlunit-driver</artifactId>
             <version>2.52.0</version>
         </dependency>
-
     </dependencies>
 </project>
