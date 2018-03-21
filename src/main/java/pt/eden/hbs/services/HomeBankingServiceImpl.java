@@ -156,6 +156,7 @@ public class HomeBankingServiceImpl implements HomeBankingService {
             return new FirefoxDriver(firefoxOptions);
         } catch (Throwable e) {
             log.error("Error creating the web driver.", e);
+            throw e;
         } finally {
             if (log.isTraceEnabled()) {
                 log.trace("Setup Driver - end");
