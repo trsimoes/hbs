@@ -23,11 +23,11 @@
 
     <profiles>
         <profile>
-            <id>rasp</id>
+            <id>raspberrypi</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
                 <os>
                     <family>unix</family>
+                    <arch>arm</arch>
                 </os>
             </activation>
             <properties>
