@@ -21,6 +21,21 @@
         <jdk8.home>C:\Program Files\Java\jdk1.8.0_60</jdk8.home>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>rasp</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <jdk8.home>/usr/lib/jvm/java-8-oracle</jdk8.home>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
