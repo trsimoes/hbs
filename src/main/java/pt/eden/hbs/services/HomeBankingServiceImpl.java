@@ -154,6 +154,8 @@ public class HomeBankingServiceImpl implements HomeBankingService {
             firefoxOptions.setBinary(firefoxBinary);
             firefoxOptions.setLogLevel(FirefoxDriverLogLevel.ERROR);
             return new FirefoxDriver(firefoxOptions);
+        } catch (Throwable e) {
+            log.error("Error creating the web driver.", e);
         } finally {
             if (log.isTraceEnabled()) {
                 log.trace("Setup Driver - end");
