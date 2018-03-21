@@ -1,10 +1,7 @@
 package pt.eden.hbs.persistence;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import pt.eden.hbs.entity.Snapshot;
-
-import java.util.List;
 
 /**
  * @author : trsimoes
@@ -24,6 +21,6 @@ public interface SnapshotRepository extends CrudRepository<Snapshot, Long> {
     INNER JOIN SNAPSHOT t
     ON t.create_date_time = r.MaxTime;
      */
-    @Query(value = "")
-    public List<Snapshot> findLatestResults();
+//    @Query(value = "")
+//    public List<Snapshot> findLatestResults();
 }
