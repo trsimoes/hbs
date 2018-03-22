@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +15,6 @@ import pt.eden.hbs.entity.Snapshot;
 import pt.eden.hbs.exceptions.CurrencyConversionException;
 import pt.eden.hbs.exceptions.HomeBankingException;
 import pt.eden.hbs.exceptions.UnexpectedCurrencyFormatException;
-
-import java.io.File;
 
 /**
  * @author : trsimoes
@@ -147,12 +144,14 @@ public class HomeBankingServiceImpl implements HomeBankingService {
                 log.trace("Setup Driver - start");
             }
 
-            FirefoxBinary firefoxBinary = new FirefoxBinary(new File(ApplicationConfigurations.getInstance().get
-                    ("webdriver.gecko.driver")));
+            // https://developer.mozilla.org/en-US/Firefox/Headless_mode
+            // https://stackoverflow.com/questions/40647826/why-cannot-system-setproperty-be-used-at-class-level
+
+            FirefoxBinary firefoxBinary = new FirefoxBinary();
             firefoxBinary.addCommandLineOptions("--headless");
             FirefoxOptions firefoxOptions = new FirefoxOptions();
             firefoxOptions.setBinary(firefoxBinary);
-            firefoxOptions.setLogLevel(FirefoxDriverLogLevel.ERROR);
+//            firefoxOptions.setLogLevel(FirefoxDriverLogLevel.ERROR);
             return new FirefoxDriver(firefoxOptions);
         } catch (Throwable e) {
             log.error("Error creating the web driver.", e);

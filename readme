@@ -6,6 +6,6 @@ https://github.com/mozilla/geckodriver/releases
 3 - Install JAVA8: https://www.linuxbabe.com/desktop-linux/install-oracle-java-8-debian-jessie-raspbian-jessie-via-ppa
 4 - Install GIT (sudo apt-get install git)
 5 - Install Maven 3: https://xianic.net/2015/02/21/installing-maven-on-the-raspberry-pi/
-6 - Install MySQL: https://pimylifeup.com/raspberry-pi-mysql-phpmyadmin
-7 - Create user and database: https://www.a2hosting.com/kb/developer-corner/mysql/managing-mysql-databases-and-users-from-the-command-line#Creating-users-and-databases
+6 - Install PostgreSQL:
+7 - Create user and database:
 7 - Clone HBS project: git clone https://github.com/trsimoes/hbs.git
