@@ -1,5 +1,6 @@
 package pt.eden.hbs.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +18,14 @@ public class Snapshot {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "idgen")
     private Long id;
+
+    @Column(name = "create_date_time")
     private LocalDateTime createDateTime;
+
+    @Column(name = "account_balance")
     private Float accountBalance;
+
+    @Column(name = "credit_balance")
     private Float creditBalance;
 
     public Long getId() {

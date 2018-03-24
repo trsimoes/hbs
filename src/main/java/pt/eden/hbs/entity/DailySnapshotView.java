@@ -1,5 +1,8 @@
 package pt.eden.hbs.entity;
 
+import jdk.nashorn.internal.ir.annotations.Immutable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,18 +12,23 @@ import java.time.LocalDateTime;
  * @author : trsimoes
  */
 @Entity
+@Immutable
 @Table(name = "daily_snapshot_view")
 public class DailySnapshotView {
 
     @Id
     private Long id;
 
+    @Column(name = "create_date_time")
     private LocalDateTime createDateTime;
 
+    @Column(name = "account_balance")
     private Float accountBalance;
 
+    @Column(name = "credit_balance")
     private Float creditBalance;
 
+    @Column(name = "overall_balance")
     private Float overallBalance;
 
     public Long getId() {

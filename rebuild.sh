@@ -9,3 +9,4 @@ cp target/hbs*.jar /opt/hbs/
 cp run.sh /opt/hbs/
 cp src/main/non-packaged-resources/geckodriver /opt/hbs/
 chmod -R 766 /opt/hbs
+ln -sf /tmp/hbs.log /opt/hbs/hbs.log
