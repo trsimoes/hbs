@@ -3,13 +3,12 @@ package pt.eden.hbs;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import pt.eden.hbs.conf.ApplicationConfigurations;
 
 import java.io.File;
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class Application {
 
     public static void main(String[] args) {
