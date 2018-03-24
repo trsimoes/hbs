@@ -3,8 +3,8 @@ package pt.eden.hbs.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pt.eden.hbs.entity.Snapshot;
-import pt.eden.hbs.persistence.SnapshotRepository;
+import pt.eden.hbs.entity.DailySnapshotView;
+import pt.eden.hbs.persistence.DailySnapshotViewRepository;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
@@ -31,9 +31,9 @@ import java.util.Iterator;
 public class ChartController {
 
     @Autowired
-    private SnapshotRepository snapshotRepository;
+    private DailySnapshotViewRepository dailySnapshotViewRepository;
 
-    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @RequestMapping("/chart")
     String execute() {
@@ -48,9 +48,9 @@ public class ChartController {
         builder.append("],");
         builder.append("\"rows\": [");
 
-        final Iterable<Snapshot> all = this.snapshotRepository.findAll();
-        for (Iterator<Snapshot> iterator = all.iterator(); iterator.hasNext(); ) {
-            Snapshot snapshot = iterator.next();
+        final Iterable<DailySnapshotView> all = this.dailySnapshotViewRepository.findAll();
+        for (Iterator<DailySnapshotView> iterator = all.iterator(); iterator.hasNext(); ) {
+            DailySnapshotView snapshot = iterator.next();
             builder.append(toJson(snapshot));
             if (iterator.hasNext()) {
                 builder.append(",");
@@ -63,7 +63,7 @@ public class ChartController {
         return builder.toString();
     }
 
-    private String toJson(final Snapshot snapshot) {
+    private String toJson(final DailySnapshotView snapshot) {
         return "{\"c\":[{\"v\":\"" +
                 snapshot.getCreateDateTime().format(DATE_TIME_FORMATTER) +
                 "\",\"f\":null},{\"v\":" +

@@ -29,6 +29,6 @@ public class SchedulerService {
         if (log.isTraceEnabled()) {
             log.trace("Taking a snapshot at {}", dateFormat.format(new Date()));
         }
-        this.snapshotService.takeSnapshot();
+//        this.snapshotService.takeSnapshot();
     }
 }

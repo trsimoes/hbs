@@ -1,24 +1,24 @@
 package pt.eden.hbs.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
  * @author : trsimoes
  */
 @Entity
-@SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "s_snapshot")
-public class Snapshot {
+@Table(name = "daily_snapshot_view")
+public class DailySnapshotView {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "idgen")
     private Long id;
+
     private LocalDateTime createDateTime;
+
     private Float accountBalance;
+
     private Float creditBalance;
 
     public Long getId() {
@@ -55,7 +55,7 @@ public class Snapshot {
 
     @Override
     public String toString() {
-        return "Snapshot{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance=" + accountBalance
-                + ", creditBalance=" + creditBalance + '}';
+        return "DailySnapshotView{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance="
+                + accountBalance + ", creditBalance=" + creditBalance + '}';
     }
 }
