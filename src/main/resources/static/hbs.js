@@ -6,7 +6,7 @@ google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
     var jsonData = $.ajax({
-        url: "http://localhost:8080/chart",
+        url: "/chart",
         dataType: "json",
         async: false,
         success: function(json) {
