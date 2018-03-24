@@ -13,7 +13,7 @@ function drawChart() {
             console.log(json);
             var data = new google.visualization.DataTable(json);
             var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-            chart.draw(data, null);
+            chart.draw(data, {width: 800, height: 400});
         }
     }
     ).responseText;
