@@ -43,6 +43,7 @@ public class ChartController {
         builder.append("{");
         builder.append("\"cols\": [");
         builder.append("{\"id\":\"\",\"label\":\"Date\",\"pattern\":\"\",\"type\":\"string\"},");
+        builder.append("{\"id\":\"\",\"label\":\"Overall Balance\",\"pattern\":\"\",\"type\":\"number\"},");
         builder.append("{\"id\":\"\",\"label\":\"Account Balance\",\"pattern\":\"\",\"type\":\"number\"},");
         builder.append("{\"id\":\"\",\"label\":\"Credit Balance\",\"pattern\":\"\",\"type\":\"number\"}");
         builder.append("],");
@@ -64,27 +65,22 @@ public class ChartController {
     }
 
     private String toJson(final DailySnapshotView snapshot) {
-        return "{\"c\":[{\"v\":\"" +
+        return
+                // create date time
+                "{\"c\":[{\"v\":\"" +
                 snapshot.getCreateDateTime().format(DATE_TIME_FORMATTER) +
-                "\",\"f\":null},{\"v\":" +
+                "\",\"f\":null}," +
+                // overall balance
+                "{\"v\":" +
+                snapshot.getOverallBalance() +
+                ",\"f\":null}," +
+                // account balance
+                "{\"v\":" +
                 snapshot.getAccountBalance() +
-                ",\"f\":null},{\"v\":" +
+                ",\"f\":null}," +
+                // credit balance
+                "{\"v\":" +
                 snapshot.getCreditBalance() +
                 ",\"f\":null}]}";
-    }
-
-    @RequestMapping("/chart/demo")
-    String demo() {
-        return "{\n" + "  \"cols\": [\n"
-                + "        {\"id\":\"\",\"label\":\"Date\",\"pattern\":\"\",\"type\":\"string\"},\n"
-                + "        {\"id\":\"\",\"label\":\"Account Balance\",\"pattern\":\"\",\"type\":\"number\"},\n"
-                + "        {\"id\":\"\",\"label\":\"Credit Balance\",\"pattern\":\"\",\"type\":\"number\"}\n"
-                + "      ],\n" + "  \"rows\": [\n"
-                + "        {\"c\":[{\"v\":\"2018-03-10\",\"f\":null},{\"v\":1,\"f\":null},{\"v\":5,\"f\":null}]},\n"
-                + "        {\"c\":[{\"v\":\"2018-03-11\",\"f\":null},{\"v\":2,\"f\":null},{\"v\":4,\"f\":null}]},\n"
-                + "        {\"c\":[{\"v\":\"2018-03-12\",\"f\":null},{\"v\":3,\"f\":null},{\"v\":3,\"f\":null}]},\n"
-                + "        {\"c\":[{\"v\":\"2018-03-13\",\"f\":null},{\"v\":4,\"f\":null},{\"v\":2,\"f\":null}]},\n"
-                + "        {\"c\":[{\"v\":\"2018-03-14\",\"f\":null},{\"v\":5,\"f\":null},{\"v\":1,\"f\":null}]}\n"
-                + "      ]\n" + "}";
     }
 }

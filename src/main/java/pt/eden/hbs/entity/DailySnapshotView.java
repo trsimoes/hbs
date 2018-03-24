@@ -21,6 +21,8 @@ public class DailySnapshotView {
 
     private Float creditBalance;
 
+    private Float overallBalance;
+
     public Long getId() {
         return id;
     }
@@ -53,9 +55,17 @@ public class DailySnapshotView {
         this.creditBalance = creditBalance;
     }
 
+    public Float getOverallBalance() {
+        return overallBalance;
+    }
+
+    public void setOverallBalance(Float overallBalance) {
+        this.overallBalance = overallBalance;
+    }
+
     @Override
     public String toString() {
         return "DailySnapshotView{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance="
-                + accountBalance + ", creditBalance=" + creditBalance + '}';
+                + accountBalance + ", creditBalance=" + creditBalance + ", overallBalance=" + overallBalance + '}';
     }
 }

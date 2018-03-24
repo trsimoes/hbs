@@ -5,16 +5,16 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
-  var jsonData = $.ajax({
-      url: "http://localhost:8080/chart",
-      dataType: "json",
-      async: false
-      }).responseText;
-
-  // Create our data table out of JSON data loaded from server.
-  var data = new google.visualization.DataTable(jsonData);
-
-  // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-  chart.draw(data, null);
+    var jsonData = $.ajax({
+        url: "http://localhost:8080/chart",
+        dataType: "json",
+        async: false,
+        success: function(json) {
+            console.log(json);
+            var data = new google.visualization.DataTable(json);
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(data, null);
+        }
+    }
+    ).responseText;
 }
