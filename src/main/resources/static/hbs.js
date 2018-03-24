@@ -1,20 +1,20 @@
-google.charts.load('current', {
-'packages': ['corechart']
-});
+// Load the Visualization API and the piechart package.
+google.charts.load('current', {'packages':['corechart']});
+
+// Set a callback to run when the Google Visualization API is loaded.
 google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
-var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1SQHdELyI-DAVklk0TSMJrkqLKxX93QOvVEjTIVy78NE/edit?usp=sharing');
-query.send(handleQueryResponse);
-}
+  var jsonData = $.ajax({
+      url: "http://localhost:8080/chart",
+      dataType: "json",
+      async: false
+      }).responseText;
 
-function handleQueryResponse(response) {
-var options = {
-  title: 'Home Banking Savings',
-  hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-  vAxis: {minValue: 0}
-};
-var data = response.getDataTable();
-var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-chart.draw(data, options);
+  // Create our data table out of JSON data loaded from server.
+  var data = new google.visualization.DataTable(jsonData);
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+  chart.draw(data, null);
 }
