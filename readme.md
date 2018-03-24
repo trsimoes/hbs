@@ -14,3 +14,4 @@
 # Usefull Links
 1. Google Charts: https://gist.github.com/anonymous/315d0e4cb69db3661b46b348f0c7ba32
 2. Selenium Firefox Drivers: https://github.com/mozilla/geckodriver/releases
+3. Run HBS at boot: https://www.dexterindustries.com/howto/run-a-program-on-your-raspberry-pi-at-startup/ (Method 1: rc.local)
