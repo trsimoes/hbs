@@ -1,6 +1,6 @@
 echo Backup old HBS version
 mkdir -p /home/pi/backup/hbs
-tar cvf - /opt/hbs/* | gzip /home/pi/backup/hbs$(date +%Y%m%d%H%M%S).targz
+tar cvf - /opt/hbs/* | gzip > /home/pi/backup/hbs/$(date +%Y%m%d%H%M%S).tar.gz
 
 mvn -e clean install
 rm -rf /opt/hbs/*
