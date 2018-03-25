@@ -35,7 +35,7 @@
             </activation>
             <properties>
                 <jdk8.home>/usr/lib/jvm/java-8-oracle</jdk8.home>
-                <gecko.driver.path>/home/pi/hbs/src/main/non-packaged-resources/geckodriver</gecko.driver.path>
+                <gecko.driver.path>/home/pi/hbs/drivers/geckodriver</gecko.driver.path>
             </properties>
         </profile>
     </profiles>
@@ -63,7 +63,25 @@
                     <executable>true</executable>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <useDefaultDelimiters>true</useDefaultDelimiters>
+                </configuration>
+            </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>sample*</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>

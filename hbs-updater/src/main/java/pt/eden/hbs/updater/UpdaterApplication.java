@@ -49,7 +49,8 @@ public class UpdaterApplication {
             try {
                 initializeWebDriver();
                 Snapshot snapshot = this.homeBankingService.getCurrentDetails();
-                restTemplate.postForEntity("http://localhost:8080/send/snapshot", snapshot, Snapshot.class);
+                final String hbsServerUrl = this.configurations.get("hbs.server.url");
+                restTemplate.postForEntity(hbsServerUrl + "/send/snapshot", snapshot, Snapshot.class);
             } catch (HomeBankingException e) {
                 LOG.error("Error getting home bank details", e);
             }
