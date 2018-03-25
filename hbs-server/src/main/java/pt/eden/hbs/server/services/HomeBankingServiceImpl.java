@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pt.eden.hbs.server.conf.ApplicationConfigurations;
-import pt.eden.hbs.server.entity.Snapshot;
+import pt.eden.hbs.server.entity.SnapshotEntity;
 import pt.eden.hbs.server.exceptions.CurrencyConversionException;
 import pt.eden.hbs.server.exceptions.HomeBankingException;
 import pt.eden.hbs.server.exceptions.UnexpectedCurrencyFormatException;
@@ -27,7 +27,7 @@ public class HomeBankingServiceImpl implements HomeBankingService {
     private static final String BASE_URL = "https://www.particulares.santandertotta.pt/";
 
     @Override
-    public Snapshot getCurrentDetails() throws HomeBankingException {
+    public SnapshotEntity getCurrentDetails() throws HomeBankingException {
         try {
             if (log.isTraceEnabled()) {
                 log.trace("Get current details - start");
@@ -64,12 +64,12 @@ public class HomeBankingServiceImpl implements HomeBankingService {
         }
     }
 
-    private Snapshot fetchInformation(final WebDriver driver) throws HomeBankingException {
+    private SnapshotEntity fetchInformation(final WebDriver driver) throws HomeBankingException {
         try {
             if (log.isTraceEnabled()) {
                 log.trace("Fetch Information - start");
             }
-            final Snapshot snapshot = new Snapshot();
+            final SnapshotEntity snapshot = new SnapshotEntity();
 
             // account
             driver.navigate().to(

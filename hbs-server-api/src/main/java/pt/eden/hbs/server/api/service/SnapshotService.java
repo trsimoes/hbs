@@ -1,4 +1,4 @@
-package pt.eden.hbs.server.services;
+package pt.eden.hbs.server.api.service;
 
 /**
  * @author : trsimoes

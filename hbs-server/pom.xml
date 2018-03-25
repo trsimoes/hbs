@@ -13,8 +13,9 @@
 
     <groupId>pt.eden.hbs</groupId>
     <artifactId>hbs-server</artifactId>
-    <version>1.0.1</version>
-    <description>Home Banking Spending - Server</description>
+    <name>Home Banking Spending - Server</name>
+    <description>Core implementation of the plataform</description>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -66,6 +67,12 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>pt.eden.hbs</groupId>
+            <artifactId>hbs-server-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

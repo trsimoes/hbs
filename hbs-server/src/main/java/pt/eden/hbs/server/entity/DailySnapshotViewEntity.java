@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Immutable
 @Table(name = "daily_snapshot_view")
-public class DailySnapshotView {
+public class DailySnapshotViewEntity {
 
     @Id
     private Long id;

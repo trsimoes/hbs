@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pt.eden.hbs.server.entity.Snapshot;
+import pt.eden.hbs.server.entity.SnapshotEntity;
 import pt.eden.hbs.server.persistence.SnapshotRepository;
 
 @RestController
@@ -19,9 +19,9 @@ class SnapshotController {
     @RequestMapping("/snapshot")
     String execute() {
 
-        final Iterable<Snapshot> all = this.snapshotRepository.findAll();
+        final Iterable<SnapshotEntity> all = this.snapshotRepository.findAll();
         StringBuilder result = new StringBuilder();
-        for (Snapshot snapshot : all) {
+        for (SnapshotEntity snapshot : all) {
             result.append(snapshot.toString());
             result.append("<br/>");
         }

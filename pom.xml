@@ -5,12 +5,15 @@
 
     <groupId>pt.eden</groupId>
     <artifactId>hbs</artifactId>
-    <version>1.0.1</version>
-    <description>Home Banking Spending</description>
+    <name>Home Banking Spending</name>
+    <description>Home Banking application to manage savings</description>
     <packaging>pom</packaging>
+    <version>1.0.0</version>
 
     <modules>
+        <module>hbs-server-api</module>
         <module>hbs-server</module>
+        <module>hbs-updater</module>
     </modules>
 
     <dependencyManagement>

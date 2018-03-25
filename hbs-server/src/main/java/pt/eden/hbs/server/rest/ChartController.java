@@ -3,7 +3,7 @@ package pt.eden.hbs.server.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pt.eden.hbs.server.entity.DailySnapshotView;
+import pt.eden.hbs.server.entity.DailySnapshotViewEntity;
 import pt.eden.hbs.server.persistence.DailySnapshotViewRepository;
 
 import java.time.format.DateTimeFormatter;
@@ -49,9 +49,9 @@ public class ChartController {
         builder.append("],");
         builder.append("\"rows\": [");
 
-        final Iterable<DailySnapshotView> all = this.dailySnapshotViewRepository.findAll();
-        for (Iterator<DailySnapshotView> iterator = all.iterator(); iterator.hasNext(); ) {
-            DailySnapshotView snapshot = iterator.next();
+        final Iterable<DailySnapshotViewEntity> all = this.dailySnapshotViewRepository.findAll();
+        for (Iterator<DailySnapshotViewEntity> iterator = all.iterator(); iterator.hasNext(); ) {
+            DailySnapshotViewEntity snapshot = iterator.next();
             builder.append(toJson(snapshot));
             if (iterator.hasNext()) {
                 builder.append(",");
@@ -64,7 +64,7 @@ public class ChartController {
         return builder.toString();
     }
 
-    private String toJson(final DailySnapshotView snapshot) {
+    private String toJson(final DailySnapshotViewEntity snapshot) {
         return
                 // create date time
                 "{\"c\":[{\"v\":\"" +

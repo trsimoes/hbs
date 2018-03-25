@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "s_snapshot")
-public class Snapshot {
+@Table(name = "snapshot")
+public class SnapshotEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "idgen")

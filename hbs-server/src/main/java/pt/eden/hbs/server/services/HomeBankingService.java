@@ -1,6 +1,6 @@
 package pt.eden.hbs.server.services;
 
-import pt.eden.hbs.server.entity.Snapshot;
+import pt.eden.hbs.server.entity.SnapshotEntity;
 import pt.eden.hbs.server.exceptions.HomeBankingException;
 
 /*
@@ -8,5 +8,5 @@ import pt.eden.hbs.server.exceptions.HomeBankingException;
  */
 public interface HomeBankingService {
 
-    Snapshot getCurrentDetails() throws HomeBankingException;
+    SnapshotEntity getCurrentDetails() throws HomeBankingException;
 }
