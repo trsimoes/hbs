@@ -25,6 +25,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Autowired
     private SnapshotRepository snapshotRepository;
 
+    @Autowired
+    private ApplicationConfigurations configurations;
+
     @Override
     public void takeSnapshot() {
 
@@ -52,9 +55,8 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private HomeBankingService create() {
         final HomeBankingServiceFactory homeBankingServiceFactory = HomeBankingServiceFactory.getInstance();
-        final ApplicationConfigurations configurations = ApplicationConfigurations.getInstance();
-        final String username = configurations.get("home.banking.username");
-        final String password = configurations.get("home.banking.password");
+        final String username = this.configurations.get("home.banking.username");
+        final String password = this.configurations.get("home.banking.password");
         Context context = new Context(username, password);
         return homeBankingServiceFactory.get(context);
     }
