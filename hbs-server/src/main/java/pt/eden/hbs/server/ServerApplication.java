@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pt.eden.hbs.server.conf.ApplicationConfigurations;
+import pt.eden.hbs.configuration.ApplicationConfigurations;
 
 import java.io.File;
 

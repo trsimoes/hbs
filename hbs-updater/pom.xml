@@ -18,16 +18,29 @@
     <description>Performs on-demand updates in the system.</description>
     <version>1.0.0</version>
 
+    <properties>
+        <gecko.driver.path>C:\\public\\git\\hbs\\lib\\geckodriver.exe</gecko.driver.path>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>pt.eden.hbs</groupId>
-            <artifactId>hbs-server-api</artifactId>
+            <artifactId>hbs-commons</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>pt.eden.hbs</groupId>
+            <artifactId>hbs-bank</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
     </dependencies>
 

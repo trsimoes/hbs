@@ -1,6 +1,4 @@
-package pt.eden.hbs.server.conf;
-
-import pt.eden.hbs.server.ServerApplication;
+package pt.eden.hbs.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +19,7 @@ public class ApplicationConfigurations {
 
     private ApplicationConfigurations() {
         try {
-            final InputStream is = ServerApplication.class.getResourceAsStream("/hbs.properties");
+            final InputStream is = ApplicationConfigurations.class.getResourceAsStream("/hbs.properties");
             this.properties = new Properties();
             this.properties.load(is);
         } catch (IOException e) {

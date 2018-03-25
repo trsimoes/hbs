@@ -21,7 +21,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jdk8.home>C:\Program Files\Java\jdk1.8.0_60</jdk8.home>
-        <gecko.driver.path>C:\\public\\git\\hbs\\src\\main\\non-packaged-resources\\geckodriver.exe</gecko.driver.path>
+        <gecko.driver.path>C:\\public\\git\\hbs\\drivers\\geckodriver.exe</gecko.driver.path>
     </properties>
 
     <profiles>
@@ -69,7 +69,12 @@
     <dependencies>
         <dependency>
             <groupId>pt.eden.hbs</groupId>
-            <artifactId>hbs-server-api</artifactId>
+            <artifactId>hbs-commons</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>pt.eden.hbs</groupId>
+            <artifactId>hbs-bank</artifactId>
             <version>1.0.0</version>
         </dependency>
 
@@ -94,12 +99,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4-1206-jdbc42</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>3.11.0</version>
         </dependency>
 
         <dependency>

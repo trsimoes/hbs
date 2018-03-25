@@ -4,23 +4,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.eden.hbs.server.api.service.SnapshotService;
+import pt.eden.hbs.bank.Context;
+import pt.eden.hbs.bank.HomeBankingService;
+import pt.eden.hbs.bank.HomeBankingServiceFactory;
+import pt.eden.hbs.bank.Snapshot;
+import pt.eden.hbs.bank.exceptions.HomeBankingException;
+import pt.eden.hbs.configuration.ApplicationConfigurations;
 import pt.eden.hbs.server.entity.SnapshotEntity;
-import pt.eden.hbs.server.exceptions.HomeBankingException;
 import pt.eden.hbs.server.persistence.SnapshotRepository;
-
-import java.time.LocalDateTime;
 
 /**
  * @author : trsimoes
  */
 @Service
+@SuppressWarnings("unused")
 public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger log = LoggerFactory.getLogger(SnapshotServiceImpl.class);
-
-    @Autowired
-    private HomeBankingService homeBankingService;
 
     @Autowired
     private SnapshotRepository snapshotRepository;
@@ -33,21 +33,29 @@ public class SnapshotServiceImpl implements SnapshotService {
                 log.debug("Getting details from Home Banking server");
             }
 
-            final SnapshotEntity snapshot = this.homeBankingService.getCurrentDetails();
+            final HomeBankingService homeBankingService = create();
+            final Snapshot snapshot = homeBankingService.getCurrentDetails();
 
             if (log.isTraceEnabled()) {
                 log.trace("Details from Bank: " + snapshot.toString());
             }
 
-            snapshot.setCreateDateTime(LocalDateTime.now());
-
             if (log.isTraceEnabled()) {
                 log.trace("Saving snapshot to database: " + snapshot.toString());
             }
 
-            this.snapshotRepository.save(snapshot);
+            this.snapshotRepository.save(SnapshotEntity.from(snapshot));
         } catch (HomeBankingException e) {
             log.error("Error getting snapshot", e);
         }
+    }
+
+    private HomeBankingService create() {
+        final HomeBankingServiceFactory homeBankingServiceFactory = HomeBankingServiceFactory.getInstance();
+        final ApplicationConfigurations configurations = ApplicationConfigurations.getInstance();
+        final String username = configurations.get("home.banking.username");
+        final String password = configurations.get("home.banking.password");
+        Context context = new Context(username, password);
+        return homeBankingServiceFactory.get(context);
     }
 }

@@ -11,13 +11,20 @@
     <version>1.0.0</version>
 
     <modules>
-        <module>hbs-server-api</module>
+        <module>hbs-commons</module>
+        <module>hbs-bank</module>
         <module>hbs-server</module>
         <module>hbs-updater</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>pt.eden.hbs</groupId>
+                <artifactId>hbs-commons</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>

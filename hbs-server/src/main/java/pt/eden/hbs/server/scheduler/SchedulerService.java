@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import pt.eden.hbs.server.api.service.SnapshotService;
+import pt.eden.hbs.server.services.SnapshotService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +29,6 @@ public class SchedulerService {
         if (log.isTraceEnabled()) {
             log.trace("Taking a snapshot at {}", dateFormat.format(new Date()));
         }
-//        this.snapshotService.takeSnapshot();
+        this.snapshotService.takeSnapshot();
     }
 }

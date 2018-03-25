@@ -1,4 +1,4 @@
-package pt.eden.hbs.server.exceptions;
+package pt.eden.hbs.bank.exceptions;
 
 /**
  * @author : trsimoes

@@ -1,4 +1,4 @@
-package pt.eden.hbs.server.services;
+package pt.eden.hbs.bank;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -9,25 +9,27 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import pt.eden.hbs.server.conf.ApplicationConfigurations;
-import pt.eden.hbs.server.entity.SnapshotEntity;
-import pt.eden.hbs.server.exceptions.CurrencyConversionException;
-import pt.eden.hbs.server.exceptions.HomeBankingException;
-import pt.eden.hbs.server.exceptions.UnexpectedCurrencyFormatException;
+import pt.eden.hbs.bank.exceptions.CurrencyConversionException;
+import pt.eden.hbs.bank.exceptions.HomeBankingException;
+import pt.eden.hbs.bank.exceptions.UnexpectedCurrencyFormatException;
+
+import java.time.LocalDateTime;
 
 /**
  * @author : trsimoes
  */
-@Service
 public class HomeBankingServiceImpl implements HomeBankingService {
 
     private static final Logger log = LoggerFactory.getLogger(HomeBankingServiceImpl.class);
 
-    private static final String BASE_URL = "https://www.particulares.santandertotta.pt/";
+    private Context context;
+
+    HomeBankingServiceImpl(Context context) {
+        this.context = context;
+    }
 
     @Override
-    public SnapshotEntity getCurrentDetails() throws HomeBankingException {
+    public Snapshot getCurrentDetails() throws HomeBankingException {
         try {
             if (log.isTraceEnabled()) {
                 log.trace("Get current details - start");
@@ -51,7 +53,8 @@ public class HomeBankingServiceImpl implements HomeBankingService {
             if (log.isTraceEnabled()) {
                 log.trace("Logout - start");
             }
-            driver.navigate().to(BASE_URL + "/bepp/sanpt/usuarios/desconexion/0,,,0.shtml?trxId=201803180025637992");
+            driver.navigate().to(
+                    Context.BASE_URL + "/bepp/sanpt/usuarios/desconexion/0,,,0.shtml?trxId=201803180025637992");
             WebElement logoutButton = driver.findElement(By.xpath("//*[@id=\"exit\"]"));
             logoutButton.click();
         } finally {
@@ -64,24 +67,24 @@ public class HomeBankingServiceImpl implements HomeBankingService {
         }
     }
 
-    private SnapshotEntity fetchInformation(final WebDriver driver) throws HomeBankingException {
+    private Snapshot fetchInformation(final WebDriver driver) throws HomeBankingException {
         try {
             if (log.isTraceEnabled()) {
                 log.trace("Fetch Information - start");
             }
-            final SnapshotEntity snapshot = new SnapshotEntity();
+            final Snapshot snapshot = new Snapshot();
 
             // account
             driver.navigate().to(
-                    BASE_URL + "/bepp/sanpt/cuentas/listadomovimientoscuenta/0,,,0.shtml?trxId=201803180025635064");
+                    Context.BASE_URL + "/bepp/sanpt/cuentas/listadomovimientoscuenta/0,,,0.shtml?trxId=201803180025635064");
             final String accountBalanceRaw = driver.findElement(
                     By.xpath("/html/body/form[3]/div[7]/div[2]/table/tbody/tr/td[4]/span")).getText();
             final Float accountBalance = convert("accountBalance", accountBalanceRaw);
             snapshot.setAccountBalance(accountBalance);
 
             // card
-            driver.navigate().to(
-                    BASE_URL + "/bepp/sanpt/tarjetas/posiciontarjetas/0,,,0.shtml?bf=9&nuevo=si&trxId=201803180025635545");
+            driver.navigate().to(Context.BASE_URL
+                    + "/bepp/sanpt/tarjetas/posiciontarjetas/0,,,0.shtml?bf=9&nuevo=si&trxId=201803180025635545");
             final String creditLimitRaw = driver.findElement(
                     By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[3]")).getText();
             final Float creditLimit = convert("creditLimit", creditLimitRaw);
@@ -103,6 +106,8 @@ public class HomeBankingServiceImpl implements HomeBankingService {
                 log.trace("---------------------------");
             }
 
+            snapshot.setCreateDateTime(LocalDateTime.now());
+
             return snapshot;
         } finally {
             if (log.isTraceEnabled()) {
@@ -117,17 +122,16 @@ public class HomeBankingServiceImpl implements HomeBankingService {
                 log.trace("Login - start");
             }
 
-            final ApplicationConfigurations configurations = ApplicationConfigurations.getInstance();
             final WebDriver driver = setupDriver();
 
-            String loginURL = BASE_URL + "/bepp/sanpt/usuarios/login/?";
+            String loginURL = Context.BASE_URL + "/bepp/sanpt/usuarios/login/?";
             driver.navigate().to(loginURL);
             WebElement usernameText = driver.findElement(By.id("identificacionUsuario"));
             WebElement passwordText = driver.findElement(By.id("claveConsultiva"));
             WebElement submitButton = driver.findElement(By.xpath("//a[@id='login_button']"));
 
-            usernameText.sendKeys(configurations.get("home.banking.username"));
-            passwordText.sendKeys(configurations.get("home.banking.password"));
+            usernameText.sendKeys(this.context.getUsername());
+            passwordText.sendKeys(this.context.getPassword());
             submitButton.click();
 
             return driver;
@@ -151,7 +155,6 @@ public class HomeBankingServiceImpl implements HomeBankingService {
             firefoxBinary.addCommandLineOptions("--headless");
             FirefoxOptions firefoxOptions = new FirefoxOptions();
             firefoxOptions.setBinary(firefoxBinary);
-//            firefoxOptions.setLogLevel(FirefoxDriverLogLevel.ERROR);
             return new FirefoxDriver(firefoxOptions);
         } catch (Throwable e) {
             log.error("Error creating the web driver.", e);
@@ -166,10 +169,10 @@ public class HomeBankingServiceImpl implements HomeBankingService {
     private Float convert(final String attribute, final String value) throws HomeBankingException {
         if (StringUtils.isNotBlank(value)) {
             if (value.trim().endsWith(" EUR")) {
-                String tmp= value.trim();
+                String tmp = value.trim();
                 tmp = tmp.replace(".", "");
                 tmp = tmp.replace(",", ".");
-                tmp = tmp.substring(0, tmp.length()-4);
+                tmp = tmp.substring(0, tmp.length() - 4);
                 return Float.valueOf(tmp);
             } else {
                 throw new UnexpectedCurrencyFormatException(attribute, value);
