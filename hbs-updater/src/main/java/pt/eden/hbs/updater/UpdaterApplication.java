@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import pt.eden.hbs.bank.HomeBankingService;
 import pt.eden.hbs.bank.Snapshot;
@@ -47,12 +48,24 @@ public class UpdaterApplication {
     public CommandLineRunner run(RestTemplate restTemplate) {
         return args -> {
             try {
+                LOG.info("Getting current balance...");
                 initializeWebDriver();
-                Snapshot snapshot = this.homeBankingService.getCurrentDetails();
-                final String hbsServerUrl = this.configurations.get("hbs.server.url");
-                restTemplate.postForEntity(hbsServerUrl + "/send/snapshot", snapshot, Snapshot.class);
+                final Snapshot snapshot = this.homeBankingService.getCurrentDetails();
+                if (snapshot != null) {
+                    LOG.info("Current Balance at " + snapshot.getCreateDateTime() + " is:");
+                    LOG.info("\tAccount Balance:\t" + snapshot.getAccountBalance());
+                    LOG.info("\tCredit Balance:\t\t" + snapshot.getCreditBalance());
+                } else {
+                    LOG.warn("Could not fetch current balance.");
+                }
+                final String baseURL = this.configurations.get("hbs.server.url");
+                restTemplate.postForEntity(baseURL + "/send/snapshot", snapshot, Snapshot.class);
+                LOG.info("Details successfully stored in HBS database");
+                LOG.info("For more information, please visit: http://tsns1.dtdns.net:8080/chart.html");
             } catch (HomeBankingException e) {
                 LOG.error("Error getting home bank details", e);
+            } catch (RestClientException e) {
+                LOG.error("Error storing snapshot on HBS server", e);
             }
         };
     }
@@ -62,6 +75,7 @@ public class UpdaterApplication {
         if (!new File(driverPath).isFile()) {
             LOG.error("The 'webdriver.gecko.driverPath' property points to an invalid " + "location: " + driverPath
                     + ". Please verify the driver path.");
+            System.exit(-1);
         } else if (StringUtils.isNotBlank(driverPath)) {
             System.setProperty("webdriver.gecko.driver", driverPath);
         } else {
