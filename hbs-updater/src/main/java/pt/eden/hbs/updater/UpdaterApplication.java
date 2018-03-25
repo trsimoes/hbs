@@ -11,9 +11,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
-import pt.eden.hbs.bank.Context;
 import pt.eden.hbs.bank.HomeBankingService;
-import pt.eden.hbs.bank.HomeBankingServiceFactory;
 import pt.eden.hbs.bank.Snapshot;
 import pt.eden.hbs.bank.exceptions.HomeBankingException;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
@@ -29,6 +27,10 @@ public class UpdaterApplication {
     @Autowired
     @SuppressWarnings("unused")
     private ApplicationConfigurations configurations;
+
+    @Autowired
+    @SuppressWarnings("unused")
+    private HomeBankingService homeBankingService;
 
     public static void main(String args[]) {
         SpringApplication.run(UpdaterApplication.class);
@@ -46,21 +48,12 @@ public class UpdaterApplication {
         return args -> {
             try {
                 initializeWebDriver();
-                Snapshot snapshot = fetchHomeBankSnapshot();
+                Snapshot snapshot = this.homeBankingService.getCurrentDetails();
                 restTemplate.postForEntity("http://localhost:8080/send/snapshot", snapshot, Snapshot.class);
             } catch (HomeBankingException e) {
                 LOG.error("Error getting home bank details", e);
             }
         };
-    }
-
-    private Snapshot fetchHomeBankSnapshot() throws HomeBankingException {
-        final HomeBankingServiceFactory homeBankingServiceFactory = HomeBankingServiceFactory.getInstance();
-        final String username = this.configurations.get("home.banking.username");
-        final String password = this.configurations.get("home.banking.password");
-        Context context = new Context(username, password);
-        final HomeBankingService homeBankingService = homeBankingServiceFactory.get(context);
-        return homeBankingService.getCurrentDetails();
     }
 
     private void initializeWebDriver() {

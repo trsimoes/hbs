@@ -9,24 +9,28 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pt.eden.hbs.bank.exceptions.CurrencyConversionException;
 import pt.eden.hbs.bank.exceptions.HomeBankingException;
 import pt.eden.hbs.bank.exceptions.UnexpectedCurrencyFormatException;
+import pt.eden.hbs.configuration.ApplicationConfigurations;
 
 import java.time.LocalDateTime;
 
 /**
  * @author : trsimoes
  */
+@Service
 public class HomeBankingServiceImpl implements HomeBankingService {
 
     private static final Logger log = LoggerFactory.getLogger(HomeBankingServiceImpl.class);
 
-    private Context context;
+    private static final String BASE_URL = "https://www.particulares.santandertotta.pt/";
 
-    HomeBankingServiceImpl(Context context) {
-        this.context = context;
-    }
+    @Autowired
+    @SuppressWarnings("unused")
+    private ApplicationConfigurations configurations;
 
     @Override
     public Snapshot getCurrentDetails() throws HomeBankingException {
@@ -54,7 +58,7 @@ public class HomeBankingServiceImpl implements HomeBankingService {
                 log.trace("Logout - start");
             }
             driver.navigate().to(
-                    Context.BASE_URL + "/bepp/sanpt/usuarios/desconexion/0,,,0.shtml?trxId=201803180025637992");
+                    BASE_URL + "/bepp/sanpt/usuarios/desconexion/0,,,0.shtml?trxId=201803180025637992");
             WebElement logoutButton = driver.findElement(By.xpath("//*[@id=\"exit\"]"));
             logoutButton.click();
         } finally {
@@ -76,14 +80,14 @@ public class HomeBankingServiceImpl implements HomeBankingService {
 
             // account
             driver.navigate().to(
-                    Context.BASE_URL + "/bepp/sanpt/cuentas/listadomovimientoscuenta/0,,,0.shtml?trxId=201803180025635064");
+                    BASE_URL + "/bepp/sanpt/cuentas/listadomovimientoscuenta/0,,,0.shtml?trxId=201803180025635064");
             final String accountBalanceRaw = driver.findElement(
                     By.xpath("/html/body/form[3]/div[7]/div[2]/table/tbody/tr/td[4]/span")).getText();
             final Float accountBalance = convert("accountBalance", accountBalanceRaw);
             snapshot.setAccountBalance(accountBalance);
 
             // card
-            driver.navigate().to(Context.BASE_URL
+            driver.navigate().to(BASE_URL
                     + "/bepp/sanpt/tarjetas/posiciontarjetas/0,,,0.shtml?bf=9&nuevo=si&trxId=201803180025635545");
             final String creditLimitRaw = driver.findElement(
                     By.xpath("/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[3]")).getText();
@@ -124,14 +128,14 @@ public class HomeBankingServiceImpl implements HomeBankingService {
 
             final WebDriver driver = setupDriver();
 
-            String loginURL = Context.BASE_URL + "/bepp/sanpt/usuarios/login/?";
+            String loginURL = BASE_URL + "/bepp/sanpt/usuarios/login/?";
             driver.navigate().to(loginURL);
             WebElement usernameText = driver.findElement(By.id("identificacionUsuario"));
             WebElement passwordText = driver.findElement(By.id("claveConsultiva"));
             WebElement submitButton = driver.findElement(By.xpath("//a[@id='login_button']"));
 
-            usernameText.sendKeys(this.context.getUsername());
-            passwordText.sendKeys(this.context.getPassword());
+            usernameText.sendKeys(this.configurations.get("home.banking.username"));
+            passwordText.sendKeys(this.configurations.get("home.banking.password"));
             submitButton.click();
 
             return driver;

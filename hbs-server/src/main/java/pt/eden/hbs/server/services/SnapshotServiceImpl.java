@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.eden.hbs.bank.Context;
 import pt.eden.hbs.bank.HomeBankingService;
-import pt.eden.hbs.bank.HomeBankingServiceFactory;
 import pt.eden.hbs.bank.Snapshot;
 import pt.eden.hbs.bank.exceptions.HomeBankingException;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
@@ -28,6 +26,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Autowired
     private ApplicationConfigurations configurations;
 
+    @Autowired
+    private HomeBankingService homeBankingService;
+
     @Override
     public void takeSnapshot() {
 
@@ -36,8 +37,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                 log.debug("Getting details from Home Banking server");
             }
 
-            final HomeBankingService homeBankingService = create();
-            final Snapshot snapshot = homeBankingService.getCurrentDetails();
+            final Snapshot snapshot = this.homeBankingService.getCurrentDetails();
 
             if (log.isTraceEnabled()) {
                 log.trace("Details from Bank: " + snapshot.toString());
@@ -51,13 +51,5 @@ public class SnapshotServiceImpl implements SnapshotService {
         } catch (HomeBankingException e) {
             log.error("Error getting snapshot", e);
         }
-    }
-
-    private HomeBankingService create() {
-        final HomeBankingServiceFactory homeBankingServiceFactory = HomeBankingServiceFactory.getInstance();
-        final String username = this.configurations.get("home.banking.username");
-        final String password = this.configurations.get("home.banking.password");
-        Context context = new Context(username, password);
-        return homeBankingServiceFactory.get(context);
     }
 }
