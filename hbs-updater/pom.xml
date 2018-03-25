@@ -19,9 +19,25 @@
     <version>1.0.0</version>
 
     <properties>
-        <gecko.driver.path>C:\\public\\git\\hbs\\lib\\geckodriver.exe</gecko.driver.path>
+        <gecko.driver.path>${basedir}/drivers/geckodriver.exe</gecko.driver.path>
         <jdk8.home>C:\Program Files\Java\jdk1.8.0_60</jdk8.home>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>raspberrypi</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <arch>arm</arch>
+                </os>
+            </activation>
+            <properties>
+                <jdk8.home>/usr/lib/jvm/java-8-oracle</jdk8.home>
+                <gecko.driver.path>${basedir}/drivers/geckodriver</gecko.driver.path>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
