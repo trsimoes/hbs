@@ -30,7 +30,7 @@ echo ---------------------------
 echo
 rm -rf /opt/hbs/*
 cp hbs-server/target/hbs*.jar /opt/hbs/
-cp hbs-server/extra-resources/run.sh /opt/hbs/
+cp hbs-server/target/extra-resources/run.sh /opt/hbs/
 cp drivers/geckodriver /opt/hbs/
 chmod -R 766 /opt/hbs
 ln -sf /tmp/hbs.log /opt/hbs/hbs.log
