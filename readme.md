@@ -8,7 +8,7 @@
 7. Create user and database. Use same article.
 8. Clone HBS project: git clone https://github.com/trsimoes/hbs.git
 9. Run **hbs-server/rebuild.sh**
-* cd hbs-server
+* cd hbs/hbs-server
 * chmod 766 rebuild.sh
 * ./rebuild.sh
 
