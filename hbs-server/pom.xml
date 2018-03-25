@@ -81,6 +81,11 @@
                     <exclude>sample*</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>${basedir}/src/main/non-packaged-resources</directory>
+                <filtering>true</filtering>
+                <targetPath>${basedir}/target/extra-resources</targetPath>
+            </resource>
         </resources>
     </build>
 
