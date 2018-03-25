@@ -1,4 +1,4 @@
-package pt.eden.hbs.services;
+package pt.eden.hbs.server.services;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -10,11 +10,11 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pt.eden.hbs.conf.ApplicationConfigurations;
-import pt.eden.hbs.entity.Snapshot;
-import pt.eden.hbs.exceptions.CurrencyConversionException;
-import pt.eden.hbs.exceptions.HomeBankingException;
-import pt.eden.hbs.exceptions.UnexpectedCurrencyFormatException;
+import pt.eden.hbs.server.conf.ApplicationConfigurations;
+import pt.eden.hbs.server.entity.Snapshot;
+import pt.eden.hbs.server.exceptions.CurrencyConversionException;
+import pt.eden.hbs.server.exceptions.HomeBankingException;
+import pt.eden.hbs.server.exceptions.UnexpectedCurrencyFormatException;
 
 /**
  * @author : trsimoes

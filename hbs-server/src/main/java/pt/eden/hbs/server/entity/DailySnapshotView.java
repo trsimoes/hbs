@@ -1,22 +1,22 @@
-package pt.eden.hbs.entity;
+package pt.eden.hbs.server.entity;
+
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
  * @author : trsimoes
  */
 @Entity
-@SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "s_snapshot")
-public class Snapshot {
+@Immutable
+@Table(name = "daily_snapshot_view")
+public class DailySnapshotView {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "idgen")
     private Long id;
 
     @Column(name = "create_date_time")
@@ -27,6 +27,9 @@ public class Snapshot {
 
     @Column(name = "credit_balance")
     private Float creditBalance;
+
+    @Column(name = "overall_balance")
+    private Float overallBalance;
 
     public Long getId() {
         return id;
@@ -60,9 +63,17 @@ public class Snapshot {
         this.creditBalance = creditBalance;
     }
 
+    public Float getOverallBalance() {
+        return overallBalance;
+    }
+
+    public void setOverallBalance(Float overallBalance) {
+        this.overallBalance = overallBalance;
+    }
+
     @Override
     public String toString() {
-        return "Snapshot{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance=" + accountBalance
-                + ", creditBalance=" + creditBalance + '}';
+        return "DailySnapshotView{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance="
+                + accountBalance + ", creditBalance=" + creditBalance + ", overallBalance=" + overallBalance + '}';
     }
 }

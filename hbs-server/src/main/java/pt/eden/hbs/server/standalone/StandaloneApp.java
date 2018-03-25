@@ -1,10 +1,10 @@
-package pt.eden.hbs.standalone;
+package pt.eden.hbs.server.standalone;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import pt.eden.hbs.conf.ApplicationConfigurations;
+import pt.eden.hbs.server.conf.ApplicationConfigurations;
 
 import java.io.File;
 
@@ -31,7 +31,7 @@ public class StandaloneApp {
                     + "in the 'hbs.properties' file.");
         }
 
-        ApplicationContext ctx = null;
+        ApplicationContext ctx;
         //        try {
         ctx = new AnnotationConfigApplicationContext(StandaloneApp.class);
         StandaloneSnapshotServiceWrapper snapshotService = ctx.getBean(StandaloneSnapshotServiceWrapper.class);

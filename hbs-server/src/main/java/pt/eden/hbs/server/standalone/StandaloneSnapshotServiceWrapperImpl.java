@@ -1,11 +1,11 @@
-package pt.eden.hbs.standalone;
+package pt.eden.hbs.server.standalone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import pt.eden.hbs.services.SnapshotService;
+import pt.eden.hbs.server.services.SnapshotService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

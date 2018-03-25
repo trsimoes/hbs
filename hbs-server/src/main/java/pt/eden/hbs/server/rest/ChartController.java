@@ -1,10 +1,10 @@
-package pt.eden.hbs.rest;
+package pt.eden.hbs.server.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pt.eden.hbs.entity.DailySnapshotView;
-import pt.eden.hbs.persistence.DailySnapshotViewRepository;
+import pt.eden.hbs.server.entity.DailySnapshotView;
+import pt.eden.hbs.server.persistence.DailySnapshotViewRepository;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;

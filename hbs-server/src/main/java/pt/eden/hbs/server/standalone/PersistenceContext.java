@@ -1,4 +1,4 @@
-package pt.eden.hbs.standalone;
+package pt.eden.hbs.server.standalone;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

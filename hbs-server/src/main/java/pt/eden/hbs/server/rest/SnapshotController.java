@@ -1,12 +1,12 @@
-package pt.eden.hbs.rest;
+package pt.eden.hbs.server.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pt.eden.hbs.entity.Snapshot;
-import pt.eden.hbs.persistence.SnapshotRepository;
+import pt.eden.hbs.server.entity.Snapshot;
+import pt.eden.hbs.server.persistence.SnapshotRepository;
 
 @RestController
 class SnapshotController {

@@ -1,12 +1,12 @@
-package pt.eden.hbs.services;
+package pt.eden.hbs.server.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.eden.hbs.entity.Snapshot;
-import pt.eden.hbs.exceptions.HomeBankingException;
-import pt.eden.hbs.persistence.SnapshotRepository;
+import pt.eden.hbs.server.entity.Snapshot;
+import pt.eden.hbs.server.exceptions.HomeBankingException;
+import pt.eden.hbs.server.persistence.SnapshotRepository;
 
 import java.time.LocalDateTime;
 

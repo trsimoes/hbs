@@ -1,7 +1,7 @@
-package pt.eden.hbs.persistence;
+package pt.eden.hbs.server.persistence;
 
 import org.springframework.data.repository.CrudRepository;
-import pt.eden.hbs.entity.Snapshot;
+import pt.eden.hbs.server.entity.Snapshot;
 
 /**
  * @author : trsimoes
