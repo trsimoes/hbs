@@ -1,31 +1,32 @@
-echo -e \n
+echo
 echo ---------------------------
 echo Backup old HBS version
 echo ---------------------------
-echo -e \n
+echo
 mkdir -p /home/pi/backup/hbs
 tar cvf - /opt/hbs/* | gzip > /home/pi/backup/hbs/$(date +%Y%m%d%H%M%S).tar.gz
 
-echo -e \n
+echo
 echo ---------------------------
 echo Shutting down HBS Server
 echo ---------------------------
-echo -e \n
-curl -X POST localhost:8080/shutdown
+echo
+#curl -X POST localhost:8080/shutdown
+ps -ef | grep gecko | grep -v grep | awk '{print $2}' | xargs sudo kill -9
 
-echo -e \n
+echo
 echo ---------------------------
 echo Update and compile code
 echo ---------------------------
-echo -e \n
+echo
 git pull
 mvn -e clean install
 
-echo -e \n
+echo
 echo ---------------------------
 echo Deploying HBS Server
 echo ---------------------------
-echo -e \n
+echo
 rm -rf /opt/hbs/*
 cp target/hbs*.jar /opt/hbs/
 cp run.sh /opt/hbs/
@@ -33,8 +34,8 @@ cp src/main/non-packaged-resources/geckodriver /opt/hbs/
 chmod -R 766 /opt/hbs
 ln -sf /tmp/hbs.log /opt/hbs/hbs.log
 
-echo -e \n
+echo
 echo ---------------------------
 echo Done
 echo ---------------------------
-echo -e \n
+echo
