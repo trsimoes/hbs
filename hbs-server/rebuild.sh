@@ -19,6 +19,7 @@ echo ---------------------------
 echo Update and compile code
 echo ---------------------------
 echo
+git reset --hard origin/master
 git pull
 mvn -e clean install
 
