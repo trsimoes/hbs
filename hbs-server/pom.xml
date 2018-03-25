@@ -79,7 +79,15 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>sample*</exclude>
+                    <exclude>static/favicon.ico</exclude>
                 </excludes>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>static/favicon.ico</include>
+                </includes>
             </resource>
             <resource>
                 <directory>${basedir}/src/main/non-packaged-resources</directory>
