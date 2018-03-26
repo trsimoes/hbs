@@ -1,9 +1,9 @@
-package pt.eden.hbs.bank.exceptions;
+package pt.eden.hbs.exceptions;
 
 /**
  * @author : trsimoes
  */
-public class UnexpectedCurrencyFormatException extends HomeBankingException {
+public class UnexpectedCurrencyFormatException extends CurrencyException {
 
     public UnexpectedCurrencyFormatException(String attribute, String value) {
         super("Unexpected format found for attribute '" + attribute + "' with value '" + value + "'. Expected value "

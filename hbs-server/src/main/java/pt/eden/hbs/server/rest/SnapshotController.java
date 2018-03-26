@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pt.eden.hbs.bank.Snapshot;
+import pt.eden.hbs.bank.HomeBankingSnapshot;
 import pt.eden.hbs.server.entity.SnapshotEntity;
 import pt.eden.hbs.server.persistence.SnapshotRepository;
 
@@ -35,7 +35,7 @@ class SnapshotController {
     }
 
     @RequestMapping(value = "/send/snapshot", method = RequestMethod.POST)
-    public ResponseEntity<Snapshot> update(@RequestBody final Snapshot snapshot) {
+    public ResponseEntity<HomeBankingSnapshot> update(@RequestBody final HomeBankingSnapshot snapshot) {
 
         this.snapshotRepository.save(SnapshotEntity.from(snapshot));
 

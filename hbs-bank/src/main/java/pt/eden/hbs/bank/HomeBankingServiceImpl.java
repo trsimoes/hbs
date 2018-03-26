@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.eden.hbs.bank.exceptions.CurrencyConversionException;
-import pt.eden.hbs.bank.exceptions.HomeBankingException;
-import pt.eden.hbs.bank.exceptions.UnexpectedCurrencyFormatException;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
+import pt.eden.hbs.exceptions.CurrencyConversionException;
+import pt.eden.hbs.exceptions.CurrencyException;
+import pt.eden.hbs.exceptions.UnexpectedCurrencyFormatException;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
  * @author : trsimoes
  */
 @Service
+@SuppressWarnings("unused")
 public class HomeBankingServiceImpl implements HomeBankingService {
 
     private static final Logger log = LoggerFactory.getLogger(HomeBankingServiceImpl.class);
@@ -33,7 +34,7 @@ public class HomeBankingServiceImpl implements HomeBankingService {
     private ApplicationConfigurations configurations;
 
     @Override
-    public Snapshot getCurrentDetails() throws HomeBankingException {
+    public HomeBankingSnapshot getCurrentDetails() throws CurrencyException {
         try {
             if (log.isTraceEnabled()) {
                 log.trace("Get current details - start");
@@ -71,12 +72,12 @@ public class HomeBankingServiceImpl implements HomeBankingService {
         }
     }
 
-    private Snapshot fetchInformation(final WebDriver driver) throws HomeBankingException {
+    private HomeBankingSnapshot fetchInformation(final WebDriver driver) throws CurrencyException {
         try {
             if (log.isTraceEnabled()) {
                 log.trace("Fetch Information - start");
             }
-            final Snapshot snapshot = new Snapshot();
+            final HomeBankingSnapshot snapshot = new HomeBankingSnapshot();
 
             // account
             driver.navigate().to(
@@ -170,7 +171,7 @@ public class HomeBankingServiceImpl implements HomeBankingService {
         }
     }
 
-    private Float convert(final String attribute, final String value) throws HomeBankingException {
+    private Float convert(final String attribute, final String value) throws CurrencyException {
         if (StringUtils.isNotBlank(value)) {
             if (value.trim().endsWith(" EUR")) {
                 String tmp = value.trim();

@@ -1,6 +1,6 @@
 package pt.eden.hbs.server.entity;
 
-import pt.eden.hbs.bank.Snapshot;
+import pt.eden.hbs.bank.HomeBankingSnapshot;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +31,9 @@ public class SnapshotEntity {
 
     @Column(name = "credit_balance")
     private Float creditBalance;
+
+    @Column(name = "euroticket_balance")
+    private Float euroticketBalance;
 
     @SuppressWarnings("unused")
     public Long getId() {
@@ -72,19 +75,28 @@ public class SnapshotEntity {
         this.creditBalance = creditBalance;
     }
 
-    @Override
-    public String toString() {
-        return "Snapshot{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance=" + accountBalance
-                + ", creditBalance=" + creditBalance + '}';
+    public Float getEuroticketBalance() {
+        return euroticketBalance;
     }
 
-    public static SnapshotEntity from(final Snapshot snapshot) {
+    public void setEuroticketBalance(Float euroticketBalance) {
+        this.euroticketBalance = euroticketBalance;
+    }
+
+    @Override
+    public String toString() {
+        return "SnapshotEntity{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance="
+                + accountBalance + ", creditBalance=" + creditBalance + ", euroticketBalance=" + euroticketBalance
+                + '}';
+    }
+
+    public static SnapshotEntity from(final HomeBankingSnapshot homeBankingSnapshot) {
         SnapshotEntity result = null;
-        if (snapshot != null) {
+        if (homeBankingSnapshot != null) {
             result = new SnapshotEntity();
-            result.setCreateDateTime(snapshot.getCreateDateTime());
-            result.setAccountBalance(snapshot.getAccountBalance());
-            result.setCreditBalance(snapshot.getCreditBalance());
+            result.setCreateDateTime(homeBankingSnapshot.getCreateDateTime());
+            result.setAccountBalance(homeBankingSnapshot.getAccountBalance());
+            result.setCreditBalance(homeBankingSnapshot.getCreditBalance());
         }
         return result;
     }

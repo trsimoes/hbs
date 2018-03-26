@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * @author : trsimoes
  */
-public class Snapshot {
+public class HomeBankingSnapshot {
 
     private LocalDateTime createDateTime;
 

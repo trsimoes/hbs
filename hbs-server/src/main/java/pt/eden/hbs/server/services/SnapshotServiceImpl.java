@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.eden.hbs.bank.HomeBankingService;
-import pt.eden.hbs.bank.Snapshot;
-import pt.eden.hbs.bank.exceptions.HomeBankingException;
+import pt.eden.hbs.bank.HomeBankingSnapshot;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
+import pt.eden.hbs.exceptions.CurrencyException;
 import pt.eden.hbs.server.entity.SnapshotEntity;
 import pt.eden.hbs.server.persistence.SnapshotRepository;
 
@@ -37,7 +37,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                 log.debug("Getting details from Home Banking server");
             }
 
-            final Snapshot snapshot = this.homeBankingService.getCurrentDetails();
+            final HomeBankingSnapshot snapshot = this.homeBankingService.getCurrentDetails();
 
             if (log.isTraceEnabled()) {
                 log.trace("Details from Bank: " + snapshot.toString());
@@ -48,7 +48,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
 
             this.snapshotRepository.save(SnapshotEntity.from(snapshot));
-        } catch (HomeBankingException e) {
+        } catch (CurrencyException e) {
             log.error("Error getting snapshot", e);
         }
     }
