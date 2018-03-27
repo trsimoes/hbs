@@ -5,13 +5,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.eden.hbs.bank.AbstractBankService;
 import pt.eden.hbs.bank.exceptions.BankException;
 import pt.eden.hbs.bank.exceptions.CurrencyConversionException;
 import pt.eden.hbs.bank.exceptions.UnexpectedCurrencyFormatException;
-import pt.eden.hbs.configuration.ApplicationConfigurations;
 
 import java.time.LocalDateTime;
 
@@ -25,10 +23,6 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
     private static final Logger log = LoggerFactory.getLogger(SantanderBankServiceImpl.class);
 
     private static final String BASE_URL = "https://www.particulares.santandertotta.pt/";
-
-    @Autowired
-    @SuppressWarnings("unused")
-    private ApplicationConfigurations configurations;
 
     @Override
     public void logout() {
