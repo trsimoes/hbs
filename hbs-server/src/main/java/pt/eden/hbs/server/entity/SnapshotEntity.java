@@ -1,6 +1,6 @@
 package pt.eden.hbs.server.entity;
 
-import pt.eden.hbs.bank.HomeBankingSnapshot;
+import pt.eden.hbs.common.entity.Snapshot;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,64 +17,48 @@ import java.time.LocalDateTime;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "s_snapshot")
 @Table(name = "snapshot")
-public class SnapshotEntity {
+public class SnapshotEntity extends Snapshot {
+
+    private Long id;
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "idgen")
-    private Long id;
-
-    @Column(name = "create_date_time")
-    private LocalDateTime createDateTime;
-
-    @Column(name = "account_balance")
-    private Float accountBalance;
-
-    @Column(name = "credit_balance")
-    private Float creditBalance;
-
-    @Column(name = "euroticket_balance")
-    private Float euroticketBalance;
-
-    @SuppressWarnings("unused")
     public Long getId() {
         return id;
     }
 
-    @SuppressWarnings("unused")
     public void setId(Long id) {
         this.id = id;
     }
 
-    @SuppressWarnings("unused")
+    @Column(name = "create_date_time")
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
 
-    @SuppressWarnings("all")
     public void setCreateDateTime(LocalDateTime createDateTime) {
         this.createDateTime = createDateTime;
     }
 
-    @SuppressWarnings("unused")
+    @Column(name = "account_balance")
     public Float getAccountBalance() {
         return accountBalance;
     }
 
-    @SuppressWarnings("all")
     public void setAccountBalance(Float accountBalance) {
         this.accountBalance = accountBalance;
     }
 
-    @SuppressWarnings("unused")
+    @Column(name = "credit_balance")
     public Float getCreditBalance() {
         return creditBalance;
     }
 
-    @SuppressWarnings("all")
     public void setCreditBalance(Float creditBalance) {
         this.creditBalance = creditBalance;
     }
 
+    @Column(name = "euroticket_balance")
     public Float getEuroticketBalance() {
         return euroticketBalance;
     }
@@ -90,13 +74,13 @@ public class SnapshotEntity {
                 + '}';
     }
 
-    public static SnapshotEntity from(final HomeBankingSnapshot homeBankingSnapshot) {
+    public static SnapshotEntity from(final Snapshot snapshot) {
         SnapshotEntity result = null;
-        if (homeBankingSnapshot != null) {
+        if (snapshot != null) {
             result = new SnapshotEntity();
-            result.setCreateDateTime(homeBankingSnapshot.getCreateDateTime());
-            result.setAccountBalance(homeBankingSnapshot.getAccountBalance());
-            result.setCreditBalance(homeBankingSnapshot.getCreditBalance());
+            result.setCreateDateTime(snapshot.getCreateDateTime());
+            result.setAccountBalance(snapshot.getAccountBalance());
+            result.setCreditBalance(snapshot.getCreditBalance());
         }
         return result;
     }

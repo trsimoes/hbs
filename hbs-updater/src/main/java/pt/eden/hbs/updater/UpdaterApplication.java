@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import pt.eden.hbs.bank.HomeBankingService;
-import pt.eden.hbs.bank.HomeBankingSnapshot;
+import pt.eden.hbs.bank.exceptions.BankException;
+import pt.eden.hbs.bank.santander.SantanderBankService;
+import pt.eden.hbs.bank.santander.SantanderSnapshot;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
-import pt.eden.hbs.exceptions.CurrencyException;
 
 import java.io.File;
 
@@ -31,7 +31,7 @@ public class UpdaterApplication {
 
     @Autowired
     @SuppressWarnings("unused")
-    private HomeBankingService homeBankingService;
+    private SantanderBankService homeBankingService;
 
     public static void main(String args[]) {
         SpringApplication.run(UpdaterApplication.class);
@@ -50,7 +50,7 @@ public class UpdaterApplication {
             try {
                 LOG.info("Getting current balance...");
                 initializeWebDriver();
-                final HomeBankingSnapshot snapshot = this.homeBankingService.getCurrentDetails();
+                final SantanderSnapshot snapshot = this.homeBankingService.getCurrentDetails();
                 if (snapshot != null) {
                     LOG.info("Current Balance at " + snapshot.getCreateDateTime() + " is:");
                     LOG.info("\tAccount Balance:\t" + snapshot.getAccountBalance());
@@ -59,10 +59,10 @@ public class UpdaterApplication {
                     LOG.warn("Could not fetch current balance.");
                 }
                 final String baseURL = this.configurations.get("hbs.server.url");
-                restTemplate.postForEntity(baseURL + "/send/snapshot", snapshot, HomeBankingSnapshot.class);
+                restTemplate.postForEntity(baseURL + "/send/snapshot", snapshot, SantanderSnapshot.class);
                 LOG.info("Details successfully stored in HBS database");
                 LOG.info("For more information, please visit: http://tsns1.dtdns.net:8080/chart.html");
-            } catch (CurrencyException e) {
+            } catch (BankException e) {
                 LOG.error("Error getting home bank details", e);
             } catch (RestClientException e) {
                 LOG.error("Error storing snapshot on HBS server", e);

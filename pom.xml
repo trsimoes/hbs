@@ -13,7 +13,6 @@
     <modules>
         <module>hbs-commons</module>
         <module>hbs-bank</module>
-        <module>hbs-edenred</module>
         <module>hbs-server</module>
         <module>hbs-updater</module>
     </modules>

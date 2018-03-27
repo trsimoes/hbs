@@ -1,9 +1,9 @@
-package pt.eden.hbs.server.services;
-
-/**
- * @author : trsimoes
- */
-public interface SnapshotService {
-
-    void takeSnapshot();
-}
+//package pt.eden.hbs.server.services;
+//
+///**
+// * @author : trsimoes
+// */
+//public interface SnapshotService {
+//
+//    void takeSnapshot();
+//}

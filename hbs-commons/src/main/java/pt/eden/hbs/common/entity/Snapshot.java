@@ -1,22 +1,20 @@
-package pt.eden.hbs.bank;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+package pt.eden.hbs.common.entity;
 
 import java.time.LocalDateTime;
 
 /**
  * @author : trsimoes
  */
-public class HomeBankingSnapshot {
+public class Snapshot {
 
-    private LocalDateTime createDateTime;
+    protected LocalDateTime createDateTime;
 
-    private Float accountBalance;
+    protected Float accountBalance;
 
-    private Float creditBalance;
+    protected Float creditBalance;
 
-    @JsonDeserialize(using= LocalDateTimeDeserializer.class)
+    protected Float euroticketBalance;
+
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
@@ -41,9 +39,11 @@ public class HomeBankingSnapshot {
         this.creditBalance = creditBalance;
     }
 
-    @Override
-    public String toString() {
-        return "Snapshot{" + "createDateTime=" + createDateTime + ", accountBalance=" + accountBalance
-                + ", creditBalance=" + creditBalance + '}';
+    public Float getEuroticketBalance() {
+        return euroticketBalance;
+    }
+
+    public void setEuroticketBalance(Float euroticketBalance) {
+        this.euroticketBalance = euroticketBalance;
     }
 }

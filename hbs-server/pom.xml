@@ -103,11 +103,11 @@
             <artifactId>hbs-commons</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>pt.eden.hbs</groupId>
-            <artifactId>hbs-bank</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>pt.eden.hbs</groupId>-->
+            <!--<artifactId>hbs-bank</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
