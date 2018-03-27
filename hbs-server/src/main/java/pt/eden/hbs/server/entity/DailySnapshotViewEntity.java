@@ -28,6 +28,9 @@ public class DailySnapshotViewEntity {
     @Column(name = "credit_balance")
     private Float creditBalance;
 
+    @Column(name = "euroticket_balance")
+    private Float euroticketBalance;
+
     @Column(name = "overall_balance")
     private Float overallBalance;
 
@@ -63,6 +66,14 @@ public class DailySnapshotViewEntity {
         this.creditBalance = creditBalance;
     }
 
+    public Float getEuroticketBalance() {
+        return euroticketBalance;
+    }
+
+    public void setEuroticketBalance(Float euroticketBalance) {
+        this.euroticketBalance = euroticketBalance;
+    }
+
     public Float getOverallBalance() {
         return overallBalance;
     }
@@ -73,7 +84,8 @@ public class DailySnapshotViewEntity {
 
     @Override
     public String toString() {
-        return "DailySnapshotView{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance="
-                + accountBalance + ", creditBalance=" + creditBalance + ", overallBalance=" + overallBalance + '}';
+        return "DailySnapshotViewEntity{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance="
+                + accountBalance + ", creditBalance=" + creditBalance + ", euroticketBalance=" + euroticketBalance
+                + ", overallBalance=" + overallBalance + '}';
     }
 }

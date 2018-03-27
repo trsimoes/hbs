@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import pt.eden.hbs.bank.exceptions.BankException;
+import pt.eden.hbs.bank.exceptions.CurrencyConversionException;
+import pt.eden.hbs.bank.exceptions.UnexpectedCurrencyFormatException;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
 
 import javax.annotation.PostConstruct;
@@ -76,4 +78,22 @@ public abstract class AbstractBankService<T extends AbstractSnapshot> implements
     public abstract void logout();
 
     public abstract T execute() throws BankException;
+
+    public abstract String amountCurrencySuffix();
+
+    protected Float convert(final String attribute, final String value) throws BankException {
+        if (StringUtils.isNotBlank(value)) {
+            if (value.trim().endsWith(" " + amountCurrencySuffix())) {
+                String tmp = value.trim();
+                tmp = tmp.replace(".", "");
+                tmp = tmp.replace(",", ".");
+                tmp = tmp.substring(0, tmp.length() - 4);
+                return Float.valueOf(tmp);
+            } else {
+                throw new UnexpectedCurrencyFormatException(attribute, value);
+            }
+        } else {
+            throw new CurrencyConversionException(attribute, value);
+        }
+    }
 }

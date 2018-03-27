@@ -45,7 +45,8 @@ public class ChartController {
         builder.append("{\"id\":\"\",\"label\":\"Date\",\"pattern\":\"\",\"type\":\"string\"},");
         builder.append("{\"id\":\"\",\"label\":\"Overall Balance\",\"pattern\":\"\",\"type\":\"number\"},");
         builder.append("{\"id\":\"\",\"label\":\"Account Balance\",\"pattern\":\"\",\"type\":\"number\"},");
-        builder.append("{\"id\":\"\",\"label\":\"Credit Balance\",\"pattern\":\"\",\"type\":\"number\"}");
+        builder.append("{\"id\":\"\",\"label\":\"Credit Balance\",\"pattern\":\"\",\"type\":\"number\"},");
+        builder.append("{\"id\":\"\",\"label\":\"Euroticket\",\"pattern\":\"\",\"type\":\"number\"}");
         builder.append("],");
         builder.append("\"rows\": [");
 
@@ -78,9 +79,12 @@ public class ChartController {
                 "{\"v\":" +
                 snapshot.getAccountBalance() +
                 ",\"f\":null}," +
-                // credit balance
                 "{\"v\":" +
                 snapshot.getCreditBalance() +
+                ",\"f\":null}," +
+                // credit balance
+                "{\"v\":" +
+                snapshot.getEuroticketBalance() +
                 ",\"f\":null}]}";
     }
 }

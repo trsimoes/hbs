@@ -81,6 +81,7 @@ public class SnapshotEntity extends Snapshot {
             result.setCreateDateTime(snapshot.getCreateDateTime());
             result.setAccountBalance(snapshot.getAccountBalance());
             result.setCreditBalance(snapshot.getCreditBalance());
+            result.setEuroticketBalance(snapshot.getEuroticketBalance());
         }
         return result;
     }

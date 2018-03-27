@@ -1,6 +1,5 @@
 package pt.eden.hbs.bank.santander;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -8,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pt.eden.hbs.bank.AbstractBankService;
 import pt.eden.hbs.bank.exceptions.BankException;
-import pt.eden.hbs.bank.exceptions.CurrencyConversionException;
-import pt.eden.hbs.bank.exceptions.UnexpectedCurrencyFormatException;
 
 import java.time.LocalDateTime;
 
@@ -20,15 +17,15 @@ import java.time.LocalDateTime;
 @SuppressWarnings("unused")
 public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnapshot> implements SantanderBankService {
 
-    private static final Logger log = LoggerFactory.getLogger(SantanderBankServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SantanderBankServiceImpl.class);
 
     private static final String BASE_URL = "https://www.particulares.santandertotta.pt/";
 
     @Override
     public void logout() {
         try {
-            if (log.isTraceEnabled()) {
-                log.trace("Logout - start");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Logout - start");
             }
             driver.navigate().to(BASE_URL + "/bepp/sanpt/usuarios/desconexion/0,,,0.shtml?trxId=201803180025637992");
             WebElement logoutButton = driver.findElement(By.xpath("//*[@id=\"exit\"]"));
@@ -37,8 +34,8 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
             if (driver != null) {
                 driver.close();
             }
-            if (log.isTraceEnabled()) {
-                log.trace("Logout - end");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Logout - end");
             }
         }
     }
@@ -46,8 +43,8 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
     @Override
     public void login() {
         try {
-            if (log.isTraceEnabled()) {
-                log.trace("Login - start");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Login - start");
             }
 
             String loginURL = BASE_URL + "/bepp/sanpt/usuarios/login/?";
@@ -56,13 +53,13 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
             WebElement passwordText = driver.findElement(By.id("claveConsultiva"));
             WebElement submitButton = driver.findElement(By.xpath("//a[@id='login_button']"));
 
-            usernameText.sendKeys(this.configurations.get("home.banking.username"));
-            passwordText.sendKeys(this.configurations.get("home.banking.password"));
+            usernameText.sendKeys(this.configurations.get("bank.santander.username"));
+            passwordText.sendKeys(this.configurations.get("bank.santander.password"));
             submitButton.click();
 
         } finally {
-            if (log.isTraceEnabled()) {
-                log.trace("Login - end");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Login - end");
             }
         }
     }
@@ -70,8 +67,8 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
     @Override
     public SantanderSnapshot execute() throws BankException {
         try {
-            if (log.isTraceEnabled()) {
-                log.trace("Fetch Information - start");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Fetch Information - start");
             }
             final SantanderSnapshot snapshot = new SantanderSnapshot();
 
@@ -97,39 +94,28 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
             final Float creditBalance = creditLimit - remainingCredit;
             snapshot.setCreditBalance(creditBalance);
 
-            if (log.isTraceEnabled()) {
-                log.trace("---------------------------");
-                log.trace("Snapshot details");
-                log.trace("\taccountBalance: " + accountBalance);
-                log.trace("\tcreditLimit: " + creditLimit);
-                log.trace("\tremainingCredit: " + remainingCredit);
-                log.trace("\tcreditBalance: " + creditBalance);
-                log.trace("---------------------------");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("---------------------------");
+                LOG.trace("Snapshot details");
+                LOG.trace("\taccountBalance: " + accountBalance);
+                LOG.trace("\tcreditLimit: " + creditLimit);
+                LOG.trace("\tremainingCredit: " + remainingCredit);
+                LOG.trace("\tcreditBalance: " + creditBalance);
+                LOG.trace("---------------------------");
             }
 
             snapshot.setCreateDateTime(LocalDateTime.now());
 
             return snapshot;
         } finally {
-            if (log.isTraceEnabled()) {
-                log.trace("Fetch Information - end");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Fetch Information - end");
             }
         }
     }
 
-    private Float convert(final String attribute, final String value) throws BankException {
-        if (StringUtils.isNotBlank(value)) {
-            if (value.trim().endsWith(" EUR")) {
-                String tmp = value.trim();
-                tmp = tmp.replace(".", "");
-                tmp = tmp.replace(",", ".");
-                tmp = tmp.substring(0, tmp.length() - 4);
-                return Float.valueOf(tmp);
-            } else {
-                throw new UnexpectedCurrencyFormatException(attribute, value);
-            }
-        } else {
-            throw new CurrencyConversionException(attribute, value);
-        }
+    @Override
+    public String amountCurrencySuffix() {
+        return "EUR";
     }
 }
