@@ -28,6 +28,7 @@ public abstract class AbstractBankService<T extends AbstractSnapshot> implements
     protected WebDriver driver;
 
     @PostConstruct
+    @SuppressWarnings("unused")
     public void setupDriver() {
 
         final String driverPath = this.configurations.get("webdriver.gecko.driver");
@@ -56,7 +57,16 @@ public abstract class AbstractBankService<T extends AbstractSnapshot> implements
             return response;
         } finally {
             if (this.driver != null) {
-                this.driver.quit();
+                try {
+                    this.driver.quit();
+                } catch (Exception e) {
+                    LOG.warn("Could not quit web driver: " + e.getLocalizedMessage());
+                    try {
+                        this.driver.close();
+                    } catch (Exception e1) {
+                        LOG.warn("Could not close web driver: " + e.getLocalizedMessage());
+                    }
+                }
             }
         }
     }

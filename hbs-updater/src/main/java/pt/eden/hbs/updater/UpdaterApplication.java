@@ -31,7 +31,7 @@ public class UpdaterApplication {
 
     @Autowired
     @SuppressWarnings("unused")
-    private SantanderBankService homeBankingService;
+    private SantanderBankService santanderBankService;
 
     public static void main(String args[]) {
         SpringApplication.run(UpdaterApplication.class);
@@ -50,7 +50,7 @@ public class UpdaterApplication {
             try {
                 LOG.info("Getting current balance...");
                 initializeWebDriver();
-                final SantanderSnapshot snapshot = this.homeBankingService.getCurrentDetails();
+                final SantanderSnapshot snapshot = this.santanderBankService.getCurrentDetails();
                 if (snapshot != null) {
                     LOG.info("Current Balance at " + snapshot.getCreateDateTime() + " is:");
                     LOG.info("\tAccount Balance:\t" + snapshot.getAccountBalance());
@@ -66,6 +66,8 @@ public class UpdaterApplication {
                 LOG.error("Error getting home bank details", e);
             } catch (RestClientException e) {
                 LOG.error("Error storing snapshot on HBS server", e);
+            } catch (Throwable e) {
+                LOG.error("Unexpected error was caught", e);
             }
         };
     }
