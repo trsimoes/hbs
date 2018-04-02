@@ -15,12 +15,11 @@
     <artifactId>hbs-bank</artifactId>
     <name>Home Banking Spending - Bank Integration</name>
     <description>Provides integration with home banking website</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <gecko.driver.path>C:\\public\\git\\hbs\\lib\\geckodriver.exe</gecko.driver.path>
     </properties>
 
     <dependencies>

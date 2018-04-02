@@ -15,13 +15,12 @@
     <artifactId>hbs-server</artifactId>
     <name>Home Banking Spending - Server</name>
     <description>Core implementation of the plataform</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jdk8.home>C:\Program Files\Java\jdk1.8.0_60</jdk8.home>
-        <gecko.driver.path>${basedir}/../drivers/geckodriver.exe</gecko.driver.path>
     </properties>
 
     <profiles>
@@ -35,7 +34,6 @@
             </activation>
             <properties>
                 <jdk8.home>/usr/lib/jvm/java-8-oracle</jdk8.home>
-                <gecko.driver.path>${basedir}/../drivers/geckodriver</gecko.driver.path>
             </properties>
         </profile>
     </profiles>

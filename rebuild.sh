@@ -4,7 +4,7 @@ echo Shutting down HBS Server
 echo ---------------------------
 echo
 #curl -X POST localhost:8080/shutdown
-ps -ef | grep gecko | grep -v grep | awk '{print $2}' | xargs sudo kill -9
+ps -ef | grep hbs-server | grep -v grep | awk '{print $2}' | xargs sudo kill -9
 
 echo
 echo ---------------------------
@@ -31,7 +31,6 @@ echo
 rm -rf /opt/hbs/*
 cp hbs-server/target/hbs*.jar /opt/hbs/
 cp hbs-server/target/extra-resources/run.sh /opt/hbs/
-cp drivers/geckodriver /opt/hbs/
 chmod -R 766 /opt/hbs
 ln -sf /tmp/hbs.log /opt/hbs/hbs.log
 

@@ -56,8 +56,6 @@ public class UpdaterApplication {
     public CommandLineRunner run(RestTemplate restTemplate) {
         return args -> {
             try {
-                initializeWebDriver();
-
                 LOG.info("Getting Santander balance...");
                 final SantanderSnapshot santanderSnapshot = this.santanderBankService.getCurrentDetails();
                 if (santanderSnapshot != null) {
@@ -98,20 +96,5 @@ public class UpdaterApplication {
         snapshot.setCreditBalance(santanderSnapshot.getCreditBalance());
         snapshot.setEuroticketBalance(edenredSnapshot.getAccountBalance());
         return snapshot;
-    }
-
-    private void initializeWebDriver() {
-        final String driverPath = this.configurations.get("webdriver.gecko.driver");
-        if (!new File(driverPath).isFile()) {
-            LOG.error("The 'webdriver.gecko.driverPath' property points to an invalid " + "location: " + driverPath
-                    + ". Please verify the driver path.");
-            System.exit(-1);
-        } else if (StringUtils.isNotBlank(driverPath)) {
-            System.setProperty("webdriver.gecko.driver", driverPath);
-        } else {
-            LOG.error(
-                    "The 'webdriver.gecko.driverPath' property is not correctly specified in the 'hbs.properties' file.");
-            System.exit(-1);
-        }
     }
 }
