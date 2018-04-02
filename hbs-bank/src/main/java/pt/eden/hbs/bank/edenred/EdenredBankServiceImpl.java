@@ -1,14 +1,19 @@
 package pt.eden.hbs.bank.edenred;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pt.eden.hbs.bank.AbstractBankService;
 import pt.eden.hbs.bank.exceptions.BankException;
+import us.codecraft.xsoup.Xsoup;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : trsimoes
@@ -18,43 +23,42 @@ public class EdenredBankServiceImpl extends AbstractBankService<EdenredSnapshot>
 
     private static final Logger LOG = LoggerFactory.getLogger(EdenredBankServiceImpl.class);
 
-    private static final String BASE_URL = "https://www.myedenred.pt/euroticket";
+    private static final String BASE_URL = "https://www.myedenred.pt/euroticket/";
 
     @Override
-    public void login() {
-        String loginURL = BASE_URL + "/pages/login.jsf";
-        driver.navigate().to(loginURL);
-        WebElement usernameText = driver.findElement(By.id("loginform:username"));
-        WebElement passwordText = driver.findElement(By.id("loginform:password"));
-        WebElement submitButton = driver.findElement(By.id("loginform:loginButton"));
-
-        usernameText.sendKeys(this.configurations.get("bank.edenred.username"));
-        passwordText.sendKeys(this.configurations.get("bank.edenred.password"));
-        submitButton.click();
+    protected String getLoginUrl() {
+        return BASE_URL + "pages/login.jsf";
     }
 
     @Override
-    public void logout() {
-        driver.navigate().to(BASE_URL + "/pages/private/customer/customer.jsf?windowId=da0");
-        WebElement logoutButton = driver.findElement(By.id("headerForm:logoutBtn"));
-        logoutButton.click();
+    protected Map<String, String> prepareFormPostAction(final Document document) throws IOException {
+        Element loginform = document.getElementById("loginform");
+        Elements inputElements = loginform.getElementsByTag("input");
+        Map<String, String> formParameters = new HashMap<>();
+        for (Element inputElement : inputElements) {
+            String key = inputElement.attr("name");
+            String value = inputElement.attr("value");
+
+            if (key.equals("loginform:username"))
+                value = this.configurations.get("bank.edenred.username");
+            else if (key.equals("loginform:password"))
+                value = this.configurations.get("bank.edenred.password");
+
+            formParameters.put(key, value);
+        }
+        return formParameters;
     }
 
     @Override
-    public EdenredSnapshot execute() throws BankException {
-        driver.navigate().to(BASE_URL + "/pages/private/customer/customer.jsf?windowId=da0");
-        final String availableBalanceRaw = driver.findElement(
-                By.xpath("/html/body/table[1]/tbody/tr[3]/td/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]"))
-                .getText();
-        final Float availableBalance = convert("availableBalance", availableBalanceRaw);
+    protected EdenredSnapshot fetchResult() throws IOException, BankException {
+        final Document document = executeRequest(BASE_URL + "pages/private/customer/customer.jsf").parse();
+        final String xpath = "/html/body/table[1]/tbody/tr[3]/td/div/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]";
+        final String elementRaw = Xsoup.compile(xpath).evaluate(document).get();
+        final String availableBalanceRaw = elementRaw.replace("<td>", "").replace("</td>", "");
+        final Float availableBalance = convert("availableBalance", availableBalanceRaw, "€");
         EdenredSnapshot response = new EdenredSnapshot();
         response.setAccountBalance(availableBalance);
         response.setCreateDateTime(LocalDateTime.now());
         return response;
-    }
-
-    @Override
-    public String amountCurrencySuffix() {
-        return "€";
     }
 }
