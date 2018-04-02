@@ -5,6 +5,7 @@ echo ---------------------------
 echo
 #curl -X POST localhost:8080/shutdown
 ps -ef | grep hbs-server | grep -v grep | awk '{print $2}' | xargs sudo kill -9
+echo OK
 
 echo
 echo ---------------------------
@@ -13,15 +14,7 @@ echo ---------------------------
 echo
 mkdir -p /home/pi/backup/hbs
 tar cvf - /opt/hbs/* | gzip > /home/pi/backup/hbs/$(date +%Y%m%d%H%M%S).tar.gz
-
-echo
-echo ---------------------------
-echo Update and compile code
-echo ---------------------------
-echo
-git reset --hard origin/master
-git pull
-mvn -e clean install
+echo OK
 
 echo
 echo ---------------------------
@@ -36,6 +29,9 @@ ln -sf /tmp/hbs.log /opt/hbs/hbs.log
 
 echo
 echo ---------------------------
-echo Done
+echo Starting server
 echo ---------------------------
 echo
+cd /opt/hbs/
+./run.sh &
+echo OK

@@ -15,7 +15,7 @@
     <artifactId>hbs-server</artifactId>
     <name>Home Banking Spending - Server</name>
     <description>Core implementation of the plataform</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -103,11 +103,11 @@
             <artifactId>hbs-commons</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>pt.eden.hbs</groupId>-->
-            <!--<artifactId>hbs-bank</artifactId>-->
-            <!--<version>1.0.0</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>pt.eden.hbs</groupId>
+            <artifactId>hbs-bank</artifactId>
+            <version>1.0.2</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,55 +1,80 @@
-//package pt.eden.hbs.server.services;
-//
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//import pt.eden.hbs.bank.exceptions.BankException;
-//import pt.eden.hbs.bank.santander.SantanderBankService;
-//import pt.eden.hbs.bank.santander.SantanderSnapshot;
-//import pt.eden.hbs.configuration.ApplicationConfigurations;
-//import pt.eden.hbs.server.entity.SnapshotEntity;
-//import pt.eden.hbs.server.persistence.SnapshotRepository;
-//
-///**
-// * @author : trsimoes
-// */
-//@Service
-//@SuppressWarnings("unused")
-//public class SnapshotServiceImpl implements SnapshotService {
-//
-//    private static final Logger log = LoggerFactory.getLogger(SnapshotServiceImpl.class);
-//
-//    @Autowired
-//    private SnapshotRepository snapshotRepository;
-//
-//    @Autowired
-//    private ApplicationConfigurations configurations;
-//
-//    @Autowired
-//    private SantanderBankService santanderBankService;
-//
-//    @Override
-//    public void takeSnapshot() {
-//
-//        try {
-//            if (log.isDebugEnabled()) {
-//                log.debug("Getting details from Home Banking server");
-//            }
-//
-//            final SantanderSnapshot snapshot = this.santanderBankService.getCurrentDetails();
-//
-//            if (log.isTraceEnabled()) {
-//                log.trace("Details from Bank: " + snapshot.toString());
-//            }
-//
-//            if (log.isTraceEnabled()) {
-//                log.trace("Saving snapshot to database: " + snapshot.toString());
-//            }
-//
-//            this.snapshotRepository.save(SnapshotEntity.from(snapshot));
-//        } catch (BankException e) {
-//            log.error("Error getting snapshot", e);
-//        }
-//    }
-//}
+package pt.eden.hbs.server.services;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import pt.eden.hbs.bank.edenred.EdenredBankService;
+import pt.eden.hbs.bank.edenred.EdenredSnapshot;
+import pt.eden.hbs.bank.exceptions.BankException;
+import pt.eden.hbs.bank.santander.SantanderBankService;
+import pt.eden.hbs.bank.santander.SantanderSnapshot;
+import pt.eden.hbs.common.entity.Snapshot;
+import pt.eden.hbs.configuration.ApplicationConfigurations;
+import pt.eden.hbs.server.entity.SnapshotEntity;
+import pt.eden.hbs.server.persistence.SnapshotRepository;
+
+import java.time.LocalDateTime;
+
+/**
+ * @author : trsimoes
+ */
+@Service
+@SuppressWarnings("unused")
+public class SnapshotServiceImpl implements SnapshotService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
+
+    @Autowired
+    private SnapshotRepository snapshotRepository;
+
+    @Autowired
+    private ApplicationConfigurations configurations;
+
+    @Autowired
+    @SuppressWarnings("unused")
+    private SantanderBankService santanderBankService;
+
+    @Autowired
+    @SuppressWarnings("unused")
+    private EdenredBankService edenredBankService;
+
+    @Override
+    public void takeSnapshot() {
+
+        try {
+            LOG.info("Getting Santander balance...");
+            final SantanderSnapshot santanderSnapshot = this.santanderBankService.getCurrentDetails();
+            if (santanderSnapshot != null) {
+                LOG.info("Current Balance at " + santanderSnapshot.getCreateDateTime() + " is:");
+                LOG.info("\tAccount Balance:\t" + santanderSnapshot.getAccountBalance());
+                LOG.info("\tCredit Balance:\t\t" + santanderSnapshot.getCreditBalance());
+            } else {
+                LOG.warn("Could not fetch current balance.");
+            }
+
+            LOG.info("Getting Edenred balance...");
+            final EdenredSnapshot edenredSnapshot = this.edenredBankService.getCurrentDetails();
+            if (edenredSnapshot != null) {
+                LOG.info("Current Balance at " + edenredSnapshot.getCreateDateTime() + " is:");
+                LOG.info("\tAccount Balance:\t" + edenredSnapshot.getAccountBalance());
+            }
+
+            LOG.info("Publishing results...");
+            final Snapshot snapshot = convert(santanderSnapshot, edenredSnapshot);
+            this.snapshotRepository.save(SnapshotEntity.from(snapshot));
+            LOG.info("Details successfully stored in HBS database");
+        } catch (BankException e) {
+            LOG.error("Error getting snapshot", e);
+        }
+    }
+
+    private Snapshot convert(final SantanderSnapshot santanderSnapshot, final EdenredSnapshot edenredSnapshot) {
+        final Snapshot snapshot = new Snapshot();
+        snapshot.setCreateDateTime(LocalDateTime.now());
+        snapshot.setAccountBalance(santanderSnapshot.getAccountBalance());
+        snapshot.setCreditBalance(santanderSnapshot.getCreditBalance());
+        snapshot.setEuroticketBalance(edenredSnapshot.getAccountBalance());
+        return snapshot;
+    }
+}
