@@ -48,7 +48,7 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
             formParameters.put(key, value);
         }
         // hidden OGC_TOKEN
-        String url = "https://www.particulares.santandertotta.pt/nbp_guard";
+        String url = BASE_URL + "nbp_guard";
         Document authTokenDocument = Jsoup.connect(url).header("FETCH-CSRF-TOKEN", "1").post();
         String token = authTokenDocument.body().html();
         final String[] split = token.split(":");
