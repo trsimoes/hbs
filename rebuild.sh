@@ -16,6 +16,13 @@ echo >>> OK
 
 echo
 echo ---------------------------
+echo Compile HBS Server
+echo ---------------------------
+mvn -e clean install
+echo >>> OK
+
+echo
+echo ---------------------------
 echo Deploying HBS Server
 echo ---------------------------
 rm -rf /opt/hbs/*
