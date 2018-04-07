@@ -1,5 +1,6 @@
 ﻿var data = [];
 var totalPoints = 110;
+var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
 $(function () {
 
@@ -21,7 +22,12 @@ $(function () {
         xaxis: {
             mode: "categories",
             tickLength: 0
-        }
+        },
+        legend: {
+             noColumns: 2,
+             container:$("#chart-legend"),
+             labelBoxBorderColor: "#000000",
+         }
     };
 
     var data = $.ajax({
@@ -29,7 +35,6 @@ $(function () {
         dataType: "json",
         async: false,
         success: function(json) {
-            console.log(json);
             data=json;
         }
     }).responseJSON;
@@ -50,6 +55,18 @@ $(function () {
     $("div#creditBalanceDiv").countTo({from: 0, to: latest.creditBalance});
     $("div#euroticketBalanceDiv").countTo({from: 0, to: latest.euroticketBalance});
     $("div#overallBalanceDiv").countTo({from: 0, to: latest.overallBalance});
-    $("div#createDateBalanceDiv").countTo({from: 0, to: latest.createDateTime});
 
+    // 04/APR - 00H30
+    var pad = "00";
+    var createDateTime = new Date(latest.createDateTime)
+    var day = (createDateTime.getDay() + 1) + "";
+    day = pad.substring(0, pad.length - day.length) + day;
+    var month = months[createDateTime.getMonth()];
+    var hour = createDateTime.getHours() + "";
+    hour = pad.substring(0, pad.length - hour.length) + hour;
+    var minutes = createDateTime.getMinutes() + "";
+    minutes = pad.substring(0, pad.length - minutes.length) + minutes;
+    var lastUpdate = day + "/" + month + " " + hour + "H" + minutes;
+
+    $("div#createDateBalanceDiv").text(lastUpdate);
 });

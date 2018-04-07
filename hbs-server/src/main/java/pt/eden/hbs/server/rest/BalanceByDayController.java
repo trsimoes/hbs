@@ -11,6 +11,8 @@ import pt.eden.hbs.server.entity.DailySnapshotViewEntity;
 import pt.eden.hbs.server.persistence.DailySnapshotViewRepository;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 public class BalanceByDayController {
@@ -18,18 +20,20 @@ public class BalanceByDayController {
     @Autowired
     private DailySnapshotViewRepository dailySnapshotViewRepository;
 
-    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM/dd");
+    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd");
 
     @RequestMapping("/balancebyday")
     String getBalanceByDay() {
 
-        PlotData account = new PlotData("Account", "rgb(244,67,54)");
-        PlotData credit = new PlotData("Credit", "rgb(0,188,212)");
-        PlotData euroticket = new PlotData("Euroticket", "rgb(139,195,74)");
-        PlotData overall = new PlotData("Overall", "rgb(33,150,243)");
+        PlotData overall = new PlotData("Overall", "rgb(51,102,204)");
+        PlotData account = new PlotData("Account", "rgb(220,57,18)");
+        PlotData credit = new PlotData("Credit", "rgb(255,153,0)");
+        PlotData euroticket = new PlotData("Euroticket", "rgb(16,150,24)");
 
-        final Iterable<DailySnapshotViewEntity> all = this.dailySnapshotViewRepository.findAll();
-        for (DailySnapshotViewEntity snapshot : all) {
+        List<DailySnapshotViewEntity> top10 =
+                this.dailySnapshotViewRepository.findTop10ByOrderByCreateDateTimeDesc();
+        Collections.reverse(top10);
+        for (DailySnapshotViewEntity snapshot : top10) {
             final String date = snapshot.getCreateDateTime().format(DATE_TIME_FORMATTER);
             account.addPoint(date, snapshot.getAccountBalance());
             credit.addPoint(date, snapshot.getCreditBalance());
@@ -38,10 +42,10 @@ public class BalanceByDayController {
         }
 
         Chart chart = new Chart();
+        chart.addElements(overall);
         chart.addElements(account);
         chart.addElements(credit);
         chart.addElements(euroticket);
-        chart.addElements(overall);
 
         return chart.printChart();
     }
