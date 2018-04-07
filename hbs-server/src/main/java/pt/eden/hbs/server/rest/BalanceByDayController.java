@@ -26,8 +26,8 @@ public class BalanceByDayController {
     String getBalanceByDay() {
 
         PlotData overall = new PlotData("Overall", "rgb(51,102,204)");
-        PlotData account = new PlotData("Account", "rgb(220,57,18)");
-        PlotData credit = new PlotData("Credit", "rgb(255,153,0)");
+        PlotData account = new PlotData("Account", "rgb(255,153,0)");
+        PlotData credit = new PlotData("Credit", "rgb(220,57,18)");
         PlotData euroticket = new PlotData("Euroticket", "rgb(16,150,24)");
 
         List<DailySnapshotViewEntity> top10 =
