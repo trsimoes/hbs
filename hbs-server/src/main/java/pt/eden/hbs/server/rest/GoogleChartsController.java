@@ -28,7 +28,7 @@ import java.util.Iterator;
 
  */
 @RestController
-public class ChartController {
+public class GoogleChartsController {
 
     @Autowired
     private DailySnapshotViewRepository dailySnapshotViewRepository;

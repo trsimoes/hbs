@@ -7,7 +7,8 @@
 6. Install PostgreSQL: https://opensource.com/article/17/10/set-postgres-database-your-raspberry-pi
 7. Create user and database. Use same article.
 8. Clone HBS project: git clone https://github.com/trsimoes/hbs.git
-9. Run **rebuild.sh**
+9. Install FlotJF in Maven local repository: mvn install:install-file -Dfile=libs\dunse\FlotJF\0.2-SNAPSHOT\FlotJF-0.2-SNAPSHOT.jar -DgroupId=dunse -DartifactId=FlotJF -Dversion=0.2-SNAPSHOT -Dpackaging=jar
+10. Run **rebuild.sh**
 * chmod 766 rebuild.sh
 * ./rebuild.sh
 
