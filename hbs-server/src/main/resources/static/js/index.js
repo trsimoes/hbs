@@ -2,6 +2,7 @@
 var totalPoints = 110;
 
 $(function () {
+
     //Widgets count
     $('.count-to').countTo();
 
@@ -24,7 +25,7 @@ $(function () {
     };
 
     var data = $.ajax({
-        url: "http://localhost:8080/balancebyday",
+        url: "/balancebyday",
         dataType: "json",
         async: false,
         success: function(json) {
@@ -34,4 +35,21 @@ $(function () {
     }).responseJSON;
 
     var plot = $.plot('#chart', data, options );
+
+
+    var latest = $.ajax({
+            url: "/latest",
+            dataType: "json",
+            async: false,
+            success: function(json) {
+                latest=json;
+            }
+        }).responseJSON;
+
+    $("div#accountBalanceDiv").countTo({from: 0, to: latest.accountBalance});
+    $("div#creditBalanceDiv").countTo({from: 0, to: latest.creditBalance});
+    $("div#euroticketBalanceDiv").countTo({from: 0, to: latest.euroticketBalance});
+    $("div#overallBalanceDiv").countTo({from: 0, to: latest.overallBalance});
+    $("div#createDateBalanceDiv").countTo({from: 0, to: latest.createDateTime});
+
 });
