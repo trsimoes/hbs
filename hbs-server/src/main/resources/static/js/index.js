@@ -70,7 +70,7 @@ function updateInfoBoxes() {
     // 04/APR - 00H30
     var pad = "00";
     var createDateTime = new Date(latest.createDateTime)
-    var day = (createDateTime.getDay() + 1) + "";
+    var day = createDateTime.getDate() + "";
     day = pad.substring(0, pad.length - day.length) + day;
     var month = months[createDateTime.getMonth()];
     var hour = createDateTime.getHours() + "";
