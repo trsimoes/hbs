@@ -1,37 +1,43 @@
 ﻿var data = [];
 var totalPoints = 110;
 var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+var options = {
+    series: {
+        shadowSize: 0
+    },
+    grid: {
+        borderColor: '#f3f3f3',
+        borderWidth: 1,
+        tickColor: '#f3f3f3'
+    },
+    lines: {
+        fill: true
+    },
+    xaxis: {
+        mode: "categories",
+        tickLength: 0
+    },
+    legend: {
+         noColumns: 2,
+         container:$("#chart-legend"),
+         labelBoxBorderColor: "#000000",
+     }
+};
 
 $(function () {
 
     //Widgets count
     $('.count-to').countTo();
 
-    var options = {
-        series: {
-            shadowSize: 0
-        },
-        grid: {
-            borderColor: '#f3f3f3',
-            borderWidth: 1,
-            tickColor: '#f3f3f3'
-        },
-        lines: {
-            fill: true
-        },
-        xaxis: {
-            mode: "categories",
-            tickLength: 0
-        },
-        legend: {
-             noColumns: 2,
-             container:$("#chart-legend"),
-             labelBoxBorderColor: "#000000",
-         }
-    };
+    updateChart("/chart/last10days", "BALANCE LAST 10 DAYS");
+
+    updateInfoBoxes();
+});
+
+function updateChart(paramUrl, paramLabel) {
 
     var data = $.ajax({
-        url: "/balancebyday",
+        url: paramUrl,
         dataType: "json",
         async: false,
         success: function(json) {
@@ -40,6 +46,11 @@ $(function () {
     }).responseJSON;
 
     var plot = $.plot('#chart', data, options );
+
+    $("div#chart-name").text(paramLabel);
+};
+
+function updateInfoBoxes() {
 
 
     var latest = $.ajax({
@@ -69,4 +80,4 @@ $(function () {
     var lastUpdate = day + "/" + month + " " + hour + "H" + minutes;
 
     $("div#createDateBalanceDiv").text(lastUpdate);
-});
+}

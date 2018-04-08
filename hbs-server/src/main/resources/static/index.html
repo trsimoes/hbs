@@ -102,11 +102,19 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">MAIN NAVIGATION</li>
-                <li class="active">
-                    <a href="index.html">
-                        <i class="material-icons">home</i>
-                        <span>Balance By Day</span>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">equalizer</i>
+                        <span>Balances</span>
                     </a>
+                    <ul class="ml-menu">
+                        <li>
+                            <a href="#" onclick="updateChart('/chart/last10days', 'BALANCE FOR LAST 10 DAYS')">Last 10 Days</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="updateChart('/chart/alldays', 'BALANCE FOR ALL DAYS')">All Days</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -194,8 +202,8 @@
                 <div class="card">
                     <div class="header">
                         <div class="row clearfix">
-                            <div class="col-xs-12 col-sm-6">
-                                <h2>BALANCE BY DAY</h2>
+                            <div id="chart-name" class="col-xs-12 col-sm-6">
+                                BALANCE BY DAY
                             </div>
                         </div>
                     </div>
