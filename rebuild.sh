@@ -145,8 +145,8 @@ if [ "$1" != "" ]; then
                 exit 1
     esac
 else
-    echo "Rebuild all application"
-    rebuild-all
+    usage
+    exit 1
 fi
 
 
