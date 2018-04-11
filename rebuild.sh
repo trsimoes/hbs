@@ -4,7 +4,7 @@
 # author: trsimoes
 # -------------------------------------------------------
 
-backup-current-application() {
+backup_current_application() {
     echo
     echo ---------------------------
     echo Backup old HBS version
@@ -14,7 +14,7 @@ backup-current-application() {
     echo +++ OK
 }
 
-compile-project() {
+compile_project() {
     echo
     echo ---------------------------
     echo Compile HBS platform
@@ -23,7 +23,7 @@ compile-project() {
     echo +++ OK
 }
 
-stop-hbs-generic() {
+stop_hbs_generic() {
 
     SERVER_NAME=$1
 
@@ -35,7 +35,7 @@ stop-hbs-generic() {
     echo +++ OK
 }
 
-deploy-hbs-generic() {
+deploy_hbs_generic() {
 
     SERVER_NAME=$1
 
@@ -51,7 +51,7 @@ deploy-hbs-generic() {
     echo +++ OK
 }
 
-start-hbs-generic() {
+start_hbs_generic() {
 
     SERVER_NAME=$1
 
@@ -65,67 +65,67 @@ start-hbs-generic() {
     echo +++ OK
 }
 
-stop-hbs-server() {
-    stop-hbs-generic hbs-server
+stop_hbs_server() {
+    stop_hbs_generic hbs-server
 }
 
-stop-hbs-web() {
-    stop-hbs-generic hbs-web
+stop_hbs_web() {
+    stop_hbs_generic hbs-web
 }
 
-stop-all() {
-    stop-hbs-server
-    stop-hbs-web
+stop_all() {
+    stop_hbs_server
+    stop_hbs_web
 }
 
-deploy-hbs-server() {
-    deploy-hbs-generic hbs-server
+deploy_hbs_server() {
+    deploy_hbs_generic hbs-server
 }
 
-deploy-hbs-web() {
-    deploy-hbs-generic hbs-web
+deploy_hbs_web() {
+    deploy_hbs_generic hbs-web
 }
 
-deploy-all() {
-    deploy-hbs-server
-    deploy-hbs-web
+deploy_all() {
+    deploy_hbs_server
+    deploy_hbs_web
 }
 
-start-hbs-server() {
-    start-hbs-generic hbs-server
+start_hbs_server() {
+    start_hbs_generic hbs-server
 }
 
-start-hbs-web() {
-    start-hbs-generic hbs-web
+start_hbs_web() {
+    start_hbs_generic hbs-web
 }
 
-start-all() {
-    start-hbs-server
-    start-hbs-web
+start_all() {
+    start_hbs_server
+    start_hbs_web
 }
 
-rebuild-all() {
-    stop-all
-    backup-current-application
-    compile-project
-    deploy-all
-    start-all
+rebuild_all() {
+    stop_all
+    backup_current_application
+    compile_project
+    deploy_all
+    start_all
 }
 
-rebuild-hbs-server() {
-    stop-hbs-server
-    backup-current-application
-    compile-project
-    deploy-hbs-server
-    start-hbs-server
+rebuild_hbs_server() {
+    stop_hbs_server
+    backup_current_application
+    compile_project
+    deploy_hbs_server
+    start_hbs_server
 }
 
-rebuild-hbs-web() {
-    stop-hbs-web
-    backup-current-application
-    compile-project
-    deploy-hbs-web
-    start-hbs-web
+rebuild_hbs_web() {
+    stop_hbs_web
+    backup_current_application
+    compile_project
+    deploy_hbs_web
+    start_hbs_web
 }
 
 usage() {
@@ -135,11 +135,11 @@ usage() {
 ## Main script starts here
 if [ "$1" != "" ]; then
     case    $1 in
-        server) rebuild-hbs-server
+        server) rebuild_hbs_server
                 ;;
-        web)    rebuild-hbs-web
+        web)    rebuild_hbs_web
                 ;;
-        all)    rebuild-all
+        all)    rebuild_all
                 ;;
         *)      usage
                 exit 1
