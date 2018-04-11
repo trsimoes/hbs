@@ -14,7 +14,7 @@
     <groupId>pt.eden.hbs</groupId>
     <artifactId>hbs-web</artifactId>
     <name>Home Banking Spending - Web</name>
-    <description>Web Module</description>
+    <description>Web module, graphical representation</description>
     <version>1.0.0</version>
 
     <properties>
@@ -112,7 +112,6 @@
             <artifactId>spring-hateoas</artifactId>
             <version>0.24.0.RELEASE</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.apache.commons</groupId>
