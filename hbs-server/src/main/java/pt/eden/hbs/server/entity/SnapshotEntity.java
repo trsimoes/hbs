@@ -1,5 +1,6 @@
 package pt.eden.hbs.server.entity;
 
+import org.springframework.data.rest.core.annotation.RestResource;
 import pt.eden.hbs.common.entity.Snapshot;
 
 import javax.persistence.Column;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "s_snapshot")
 @Table(name = "snapshot")
+@RestResource
 public class SnapshotEntity extends Snapshot {
 
     private Long id;

@@ -1,5 +1,10 @@
 package pt.eden.hbs.common.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import java.time.LocalDateTime;
 
 /**
@@ -7,6 +12,8 @@ import java.time.LocalDateTime;
  */
 public class Snapshot {
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     protected LocalDateTime createDateTime;
 
     protected Float accountBalance;

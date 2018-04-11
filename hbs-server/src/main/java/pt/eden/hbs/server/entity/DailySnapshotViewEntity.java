@@ -1,6 +1,8 @@
 package pt.eden.hbs.server.entity;
 
 import jdk.nashorn.internal.ir.annotations.Immutable;
+import org.springframework.data.rest.core.annotation.RestResource;
+import pt.eden.hbs.common.entity.SnapshotExt;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,26 +16,12 @@ import java.time.LocalDateTime;
 @Entity
 @Immutable
 @Table(name = "daily_snapshot_view")
-public class DailySnapshotViewEntity {
+@RestResource
+public class DailySnapshotViewEntity extends SnapshotExt {
 
-    @Id
     private Long id;
 
-    @Column(name = "create_date_time")
-    private LocalDateTime createDateTime;
-
-    @Column(name = "account_balance")
-    private Float accountBalance;
-
-    @Column(name = "credit_balance")
-    private Float creditBalance;
-
-    @Column(name = "euroticket_balance")
-    private Float euroticketBalance;
-
-    @Column(name = "overall_balance")
-    private Float overallBalance;
-
+    @Id
     public Long getId() {
         return id;
     }
@@ -42,6 +30,7 @@ public class DailySnapshotViewEntity {
         this.id = id;
     }
 
+    @Column(name = "create_date_time")
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
@@ -50,6 +39,7 @@ public class DailySnapshotViewEntity {
         this.createDateTime = createDateTime;
     }
 
+    @Column(name = "account_balance")
     public Float getAccountBalance() {
         return accountBalance;
     }
@@ -58,6 +48,7 @@ public class DailySnapshotViewEntity {
         this.accountBalance = accountBalance;
     }
 
+    @Column(name = "credit_balance")
     public Float getCreditBalance() {
         return creditBalance;
     }
@@ -66,6 +57,7 @@ public class DailySnapshotViewEntity {
         this.creditBalance = creditBalance;
     }
 
+    @Column(name = "euroticket_balance")
     public Float getEuroticketBalance() {
         return euroticketBalance;
     }
@@ -74,8 +66,9 @@ public class DailySnapshotViewEntity {
         this.euroticketBalance = euroticketBalance;
     }
 
+    @Column(name = "overall_balance")
     public Float getOverallBalance() {
-        return overallBalance;
+        return this.overallBalance;
     }
 
     public void setOverallBalance(Float overallBalance) {
@@ -87,5 +80,15 @@ public class DailySnapshotViewEntity {
         return "DailySnapshotViewEntity{" + "id=" + id + ", createDateTime=" + createDateTime + ", accountBalance="
                 + accountBalance + ", creditBalance=" + creditBalance + ", euroticketBalance=" + euroticketBalance
                 + ", overallBalance=" + overallBalance + '}';
+    }
+
+    public SnapshotExt convertToSnapshotExt() {
+        SnapshotExt result = new SnapshotExt();
+        result.setCreateDateTime(this.createDateTime);
+        result.setAccountBalance(this.accountBalance);
+        result.setCreditBalance(this.creditBalance);
+        result.setEuroticketBalance(this.euroticketBalance);
+        result.setOverallBalance(this.overallBalance);
+        return result;
     }
 }

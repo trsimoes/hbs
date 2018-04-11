@@ -1,14 +1,13 @@
-package pt.eden.hbs.server;
+package pt.eden.hbs.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-//@EnableScheduling
 @ComponentScan("pt.eden.hbs")
-public class ServerApplication {
+public class WebServerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ServerApplication.class);
+        SpringApplication.run(WebServerApplication.class);
     }
 }

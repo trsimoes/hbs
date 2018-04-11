@@ -15,7 +15,12 @@
         <module>hbs-bank</module>
         <module>hbs-server</module>
         <module>hbs-updater</module>
+        <module>hbs-web</module>
     </modules>
+
+    <properties>
+        <com.fasterxml.jackson.version>2.9.4</com.fasterxml.jackson.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
