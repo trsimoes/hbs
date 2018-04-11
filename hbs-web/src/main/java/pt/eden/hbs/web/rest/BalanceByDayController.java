@@ -26,40 +26,32 @@ public class BalanceByDayController {
 
     private final ApplicationConfigurations configurations;
 
-    @Autowired
-    public BalanceByDayController(ApplicationConfigurations configurations) {
-        this.configurations = configurations;
-    }
+    private final RestTemplate restTemplate;
 
-    @Bean
-    public RestTemplate restTemplate() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new Jackson2HalModule());
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaTypes.HAL_JSON));
-        converter.setObjectMapper(mapper);
-        return new RestTemplate(Collections.singletonList(converter));
+    @Autowired
+    public BalanceByDayController(ApplicationConfigurations configurations, RestTemplate restTemplate) {
+        this.configurations = configurations;
+        this.restTemplate = restTemplate;
     }
 
     @RequestMapping("/chart/last10days")
-    String getLast10DaysChart(RestTemplate restTemplate) {
+    String getLast10DaysChart() {
         final String url = buildURL("/snapshotview/search/findTop10ByOrderByCreateDateTimeDesc");
-        PagedResources<SnapshotExt> pagedResources = restTemplate.getForObject(url, PagedResourceReturnType.class);
+        PagedResources<SnapshotExt> pagedResources = this.restTemplate.getForObject(url, PagedResourceReturnType.class);
         return generateChart(pagedResources.getContent());
     }
 
     @RequestMapping("/chart/alldays")
-    String getAllDaysChart(RestTemplate restTemplate) {
+    String getAllDaysChart() {
         final String url = buildURL("/snapshotview");
-        PagedResources<SnapshotExt> pagedResources = restTemplate.getForObject(url, PagedResourceReturnType.class);
+        PagedResources<SnapshotExt> pagedResources = this.restTemplate.getForObject(url, PagedResourceReturnType.class);
         return generateChart(pagedResources.getContent());
     }
 
     @RequestMapping("/latest")
-    ResponseEntity<SnapshotExt> getLatestSnapshot(RestTemplate restTemplate) {
+    ResponseEntity<SnapshotExt> getLatestSnapshot() {
         final String url = buildURL("/snapshotview/search/findTop1ByOrderByCreateDateTimeDesc");
-        return restTemplate.getForEntity(url, SnapshotExt.class);
+        return this.restTemplate.getForEntity(url, SnapshotExt.class);
     }
 
     private String generateChart(final Collection<SnapshotExt> list) {
