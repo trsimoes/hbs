@@ -23,11 +23,12 @@ import java.util.List;
 @RestController
 public class SnapshotController {
 
-    @Autowired
-    private SnapshotRepository snapshotRepository;
+    private final SnapshotRepository snapshotRepository;
 
-//    @Autowired
-//    private DailySnapshotViewRepository dailySnapshotViewRepository;
+    @Autowired
+    public SnapshotController(SnapshotRepository snapshotRepository) {
+        this.snapshotRepository = snapshotRepository;
+    }
 
     /**
      * This method is used by the updater app
@@ -39,37 +40,4 @@ public class SnapshotController {
 
         return new ResponseEntity<>(snapshot, HttpStatus.OK);
     }
-
-//    @RequestMapping("/find/snapshot/last10days")
-//    public ResponseEntity<List<SnapshotExt>> getLast10Days() {
-//        final List<DailySnapshotViewEntity> list = this.dailySnapshotViewRepository
-//                .findTop10ByOrderByCreateDateTimeDesc();
-//        List<SnapshotExt> result = CollectionUtils.transform(list, o -> {
-//            DailySnapshotViewEntity dsve = (DailySnapshotViewEntity) o;
-//            return dsve.convertToSnapshotExt();
-//        });
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
-//
-//    @RequestMapping("/find/snapshot/alldays")
-//    public ResponseEntity<List<SnapshotExt>> getAllDays() {
-//        final Iterable<DailySnapshotViewEntity> collection = this.dailySnapshotViewRepository.findAll();
-//        final Iterator<DailySnapshotViewEntity> iteratorToList = collection.iterator();
-//        final List<SnapshotExt> list = new ArrayList<>();
-//        while (iteratorToList.hasNext()) {
-//            list.add(iteratorToList.next());
-//        }
-//        Collections.reverse(list);
-//        List<SnapshotExt> result = CollectionUtils.transform(list, o -> {
-//            DailySnapshotViewEntity dsve = (DailySnapshotViewEntity) o;
-//            return dsve.convertToSnapshotExt();
-//        });
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
-//
-//    @RequestMapping("/find/snapshot/latest")
-//    public ResponseEntity<SnapshotExt> getLatestSnapshot() {
-//        final DailySnapshotViewEntity snapshot = this.dailySnapshotViewRepository.findTop1ByOrderByCreateDateTimeDesc();
-//        return new ResponseEntity<>(snapshot.convertToSnapshotExt(), HttpStatus.OK);
-//    }
 }

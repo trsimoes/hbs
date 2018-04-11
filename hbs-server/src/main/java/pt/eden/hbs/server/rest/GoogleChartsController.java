@@ -30,10 +30,14 @@ import java.util.Iterator;
 @RestController
 public class GoogleChartsController {
 
-    @Autowired
-    private DailySnapshotViewRepository dailySnapshotViewRepository;
+    private final DailySnapshotViewRepository dailySnapshotViewRepository;
 
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Autowired
+    public GoogleChartsController(DailySnapshotViewRepository dailySnapshotViewRepository) {
+        this.dailySnapshotViewRepository = dailySnapshotViewRepository;
+    }
 
     @RequestMapping("/chart")
     String execute() {

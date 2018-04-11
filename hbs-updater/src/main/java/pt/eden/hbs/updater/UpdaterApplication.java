@@ -29,17 +29,18 @@ public class UpdaterApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdaterApplication.class);
 
-    @Autowired
-    @SuppressWarnings("unused")
-    private ApplicationConfigurations configurations;
+    private final ApplicationConfigurations configurations;
+
+    private final SantanderBankService santanderBankService;
+
+    private final EdenredBankService edenredBankService;
 
     @Autowired
-    @SuppressWarnings("unused")
-    private SantanderBankService santanderBankService;
-
-    @Autowired
-    @SuppressWarnings("unused")
-    private EdenredBankService edenredBankService;
+    public UpdaterApplication(ApplicationConfigurations configurations, SantanderBankService santanderBankService, EdenredBankService edenredBankService) {
+        this.configurations = configurations;
+        this.santanderBankService = santanderBankService;
+        this.edenredBankService = edenredBankService;
+    }
 
     public static void main(String args[]) {
         SpringApplication.run(UpdaterApplication.class);

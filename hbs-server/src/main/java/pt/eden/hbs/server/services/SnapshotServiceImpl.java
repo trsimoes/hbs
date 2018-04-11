@@ -25,19 +25,21 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
 
-    @Autowired
-    private SnapshotRepository snapshotRepository;
+    private final SnapshotRepository snapshotRepository;
+
+    private final ApplicationConfigurations configurations;
+
+    private final SantanderBankService santanderBankService;
+
+    private final EdenredBankService edenredBankService;
 
     @Autowired
-    private ApplicationConfigurations configurations;
-
-    @Autowired
-    @SuppressWarnings("unused")
-    private SantanderBankService santanderBankService;
-
-    @Autowired
-    @SuppressWarnings("unused")
-    private EdenredBankService edenredBankService;
+    public SnapshotServiceImpl(SnapshotRepository snapshotRepository, ApplicationConfigurations configurations, SantanderBankService santanderBankService, EdenredBankService edenredBankService) {
+        this.snapshotRepository = snapshotRepository;
+        this.configurations = configurations;
+        this.santanderBankService = santanderBankService;
+        this.edenredBankService = edenredBankService;
+    }
 
     @Override
     public void takeSnapshot() {
