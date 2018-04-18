@@ -1,15 +1,10 @@
 package pt.eden.hbs.web.rest;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import flotjf.Chart;
 import flotjf.data.PlotData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.hateoas.*;
-import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +13,7 @@ import pt.eden.hbs.configuration.ApplicationConfigurations;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class BalanceByDayController {
@@ -54,15 +50,16 @@ public class BalanceByDayController {
         return this.restTemplate.getForEntity(url, SnapshotExt.class);
     }
 
-    private String generateChart(final Collection<SnapshotExt> list) {
+    private String generateChart(Collection<SnapshotExt> list) {
 
         final PlotData overall = new PlotData("Overall", "rgb(51,102,204)");
         final PlotData account = new PlotData("Account", "rgb(255,153,0)");
         final PlotData credit = new PlotData("Credit", "rgb(220,57,18)");
         final PlotData euroticket = new PlotData("Euroticket", "rgb(16,150,24)");
 
-//        Collections.reverse(list);
-        for (SnapshotExt snapshot : list) {
+        Iterator<SnapshotExt> iterator = new LinkedList<>(list).descendingIterator();
+        while (iterator.hasNext()) {
+            SnapshotExt snapshot = iterator.next();
             final String date = snapshot.getCreateDateTime().format(DATE_TIME_FORMATTER);
             account.addPoint(date, snapshot.getAccountBalance());
             credit.addPoint(date, snapshot.getCreditBalance());
