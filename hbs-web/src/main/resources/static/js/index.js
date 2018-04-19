@@ -74,7 +74,7 @@ function updateInfoBoxes() {
     var diffMs = (now - lastSnapshotDateTime);
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
 
-    var lastUpdate = diffMins + " ago";
+    var lastUpdate = diffMins + " min ago";
 
     $("div#createDateBalanceDiv").text(lastUpdate);
 }
