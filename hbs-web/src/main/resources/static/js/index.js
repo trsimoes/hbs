@@ -69,15 +69,12 @@ function updateInfoBoxes() {
 
     // 04/APR - 00H30
     var pad = "00";
-    var createDateTime = new Date(latest.createDateTime)
-    var day = createDateTime.getDate() + "";
-    day = pad.substring(0, pad.length - day.length) + day;
-    var month = months[createDateTime.getMonth()];
-    var hour = createDateTime.getHours() + "";
-    hour = pad.substring(0, pad.length - hour.length) + hour;
-    var minutes = createDateTime.getMinutes() + "";
-    minutes = pad.substring(0, pad.length - minutes.length) + minutes;
-    var lastUpdate = day + "/" + month + " " + hour + "H" + minutes;
+    var lastSnapshotDateTime = new Date(latest.createDateTime);
+    var now = new Date();
+    var diffMs = (now - lastSnapshotDateTime);
+    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+
+    var lastUpdate = diffMins + " ago";
 
     $("div#createDateBalanceDiv").text(lastUpdate);
 }
