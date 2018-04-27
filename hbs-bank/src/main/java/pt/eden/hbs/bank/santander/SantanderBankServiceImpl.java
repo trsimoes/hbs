@@ -75,7 +75,7 @@ public class SantanderBankServiceImpl extends AbstractBankService<SantanderSnaps
         xpath = "/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[3]";
         elementRaw = Xsoup.compile(xpath).evaluate(document).get();
         String creditLimitRaw = elementRaw.replace("<td class=\"money\">", "").replace("</td>", "");
-        final Float creditLimit = convert("accountBalance", creditLimitRaw, "EUR");
+        final Float creditLimit = convert("creditLimit", creditLimitRaw, "EUR");
 
         // <td class="money" style="border-right: 1px solid rgb(255, 255, 255);">754,92 EUR</td>
         xpath = "/html/body/form[2]/div[3]/table[1]/tbody/tr[4]/td[4]";
