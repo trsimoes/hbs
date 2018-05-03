@@ -34,14 +34,29 @@ public class BalanceByDayController {
     String getLast10DaysChart() {
         final String url = buildURL("/snapshotview/search/findTop10ByOrderByCreateDateTimeDesc");
         PagedResources<SnapshotExt> pagedResources = this.restTemplate.getForObject(url, PagedResourceReturnType.class);
-        return generateChart(pagedResources.getContent());
+        return generateChart(pagedResources.getContent(), true);
     }
 
     @RequestMapping("/chart/alldays")
     String getAllDaysChart() {
-        final String url = buildURL("/snapshotview");
-        PagedResources<SnapshotExt> pagedResources = this.restTemplate.getForObject(url, PagedResourceReturnType.class);
-        return generateChart(pagedResources.getContent());
+        final String baseUrl = buildURL("/snapshotview/");
+
+        Collection<SnapshotExt> list = new ArrayList<>();
+        boolean doSearch = true;
+        long page = 0;
+        while (doSearch) {
+            String url = baseUrl + "?page=" + (int) page;
+            PagedResources<SnapshotExt> tmp = this.restTemplate.getForObject(url, PagedResourceReturnType.class);
+            list.addAll(tmp.getContent());
+            PagedResources.PageMetadata metadata = tmp.getMetadata();
+            if (metadata.getTotalPages() <= page+1) {
+                doSearch = false;
+            } else {
+                page++;
+            }
+        }
+
+        return generateChart(list, false);
     }
 
     @RequestMapping("/latest")
@@ -50,14 +65,15 @@ public class BalanceByDayController {
         return this.restTemplate.getForEntity(url, SnapshotExt.class);
     }
 
-    private String generateChart(Collection<SnapshotExt> list) {
+    private String generateChart(final Collection<SnapshotExt> list, final boolean reverse) {
 
         final PlotData overall = new PlotData("Overall", "rgb(51,102,204)");
         final PlotData account = new PlotData("Account", "rgb(255,153,0)");
         final PlotData credit = new PlotData("Credit", "rgb(220,57,18)");
         final PlotData euroticket = new PlotData("Euroticket", "rgb(16,150,24)");
 
-        Iterator<SnapshotExt> iterator = new LinkedList<>(list).descendingIterator();
+        final LinkedList<SnapshotExt> linkedList = new LinkedList<>(list);
+        Iterator<SnapshotExt> iterator = reverse ? linkedList.descendingIterator() : linkedList.iterator();
         while (iterator.hasNext()) {
             SnapshotExt snapshot = iterator.next();
             final String date = snapshot.getCreateDateTime().format(DATE_TIME_FORMATTER);

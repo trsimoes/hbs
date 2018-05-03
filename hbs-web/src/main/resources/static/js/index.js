@@ -67,8 +67,6 @@ function updateInfoBoxes() {
     $("div#euroticketBalanceDiv").countTo({from: 0, to: latest.euroticketBalance});
     $("div#overallBalanceDiv").countTo({from: 0, to: latest.overallBalance});
 
-    // 04/APR - 00H30
-    var pad = "00";
     var lastSnapshotDateTime = new Date(latest.createDateTime);
     var now = new Date();
     var diffMs = (now - lastSnapshotDateTime);
