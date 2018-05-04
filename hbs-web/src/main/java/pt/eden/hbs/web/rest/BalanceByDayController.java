@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import pt.eden.hbs.common.entity.SnapshotExt;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +32,12 @@ public class BalanceByDayController {
         this.restTemplate = restTemplate;
     }
 
+    @RequestMapping("/latest")
+    ResponseEntity<SnapshotExt> getLatestSnapshot() {
+        final String url = buildURL("/snapshotview/search/findTop1ByOrderByCreateDateTimeDesc");
+        return this.restTemplate.getForEntity(url, SnapshotExt.class);
+    }
+
     @RequestMapping("/chart/last10days")
     String getLast10DaysChart() {
         final String url = buildURL("/snapshotview/search/findTop10ByOrderByCreateDateTimeDesc");
@@ -39,30 +47,39 @@ public class BalanceByDayController {
 
     @RequestMapping("/chart/alldays")
     String getAllDaysChart() {
-        final String baseUrl = buildURL("/snapshotview/");
+        final String url = buildURL("/snapshotview/");
+        Collection<SnapshotExt> list = getPaginatedResults(url);
+        return generateChart(list, false);
+    }
 
-        Collection<SnapshotExt> list = new ArrayList<>();
+    @RequestMapping("/chart/currentmonth")
+    String getCurrentMonthChart() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime firstDayOfMonth = now.withDayOfMonth(1);
+        String formattedFirstDayOfMonth = DateTimeFormatter.ISO_DATE_TIME.format(firstDayOfMonth);
+        String url = buildURL("/snapshotview/search/findAllByCreateDateTimeAfterOrderByCreateDateTimeDesc");
+        url += "?createDateTime=" + formattedFirstDayOfMonth;
+        Collection<SnapshotExt> list = getPaginatedResults(url);
+        return generateChart(list, true);
+    }
+
+    private Collection<SnapshotExt> getPaginatedResults(final String baseUrl) {
+        Collection<SnapshotExt> result = new ArrayList<>();
         boolean doSearch = true;
         long page = 0;
+        final String paramChar = (baseUrl.contains("?")) ? "&" : "&";
         while (doSearch) {
-            String url = baseUrl + "?page=" + (int) page;
+            String url = baseUrl + paramChar + "page=" + (int) page;
             PagedResources<SnapshotExt> tmp = this.restTemplate.getForObject(url, PagedResourceReturnType.class);
-            list.addAll(tmp.getContent());
+            result.addAll(tmp.getContent());
             PagedResources.PageMetadata metadata = tmp.getMetadata();
-            if (metadata.getTotalPages() <= page+1) {
+            if (metadata == null || metadata.getTotalPages() <= page+1) {
                 doSearch = false;
             } else {
                 page++;
             }
         }
-
-        return generateChart(list, false);
-    }
-
-    @RequestMapping("/latest")
-    ResponseEntity<SnapshotExt> getLatestSnapshot() {
-        final String url = buildURL("/snapshotview/search/findTop1ByOrderByCreateDateTimeDesc");
-        return this.restTemplate.getForEntity(url, SnapshotExt.class);
+        return result;
     }
 
     private String generateChart(final Collection<SnapshotExt> list, final boolean reverse) {

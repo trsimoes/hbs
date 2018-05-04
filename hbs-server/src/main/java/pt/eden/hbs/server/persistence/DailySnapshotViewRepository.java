@@ -2,9 +2,12 @@ package pt.eden.hbs.server.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import pt.eden.hbs.server.entity.DailySnapshotViewEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,4 +21,8 @@ public interface DailySnapshotViewRepository extends JpaRepository<DailySnapshot
 
     @Query
     DailySnapshotViewEntity findTop1ByOrderByCreateDateTimeDesc();
+
+    @Query
+    List<DailySnapshotViewEntity> findAllByCreateDateTimeAfterOrderByCreateDateTimeDesc(
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Param("createDateTime") LocalDateTime createDateTime);
 }
