@@ -67,7 +67,7 @@ public class BalanceByDayController {
         Collection<SnapshotExt> result = new ArrayList<>();
         boolean doSearch = true;
         long page = 0;
-        final String paramChar = (baseUrl.contains("?")) ? "&" : "&";
+        final String paramChar = (baseUrl.contains("?")) ? "&" : "?";
         while (doSearch) {
             String url = baseUrl + paramChar + "page=" + (int) page;
             PagedResources<SnapshotExt> tmp = this.restTemplate.getForObject(url, PagedResourceReturnType.class);
