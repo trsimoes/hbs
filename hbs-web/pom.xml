@@ -15,7 +15,7 @@
     <artifactId>hbs-web</artifactId>
     <name>Home Banking Spending - Web</name>
     <description>Web module, graphical representation</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
