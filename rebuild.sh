@@ -12,8 +12,8 @@ backup_current_application() {
     echo ---------------------------
     echo Backup old HBS version
     echo ---------------------------
-    mkdir -p /opt/hbs/backup
-    tar cvf - /opt/hbs/* | gzip > /opt/hbs/backup/$(date +%Y%m%d%H%M%S).tar.gz
+    mkdir -p /backup/hbs
+    tar cvf - /opt/hbs/* | gzip > /backup/hbs/$(date +%Y%m%d%H%M%S).tar.gz
     echo +++ OK
 }
 
@@ -35,11 +35,11 @@ stop_hbs_generic() {
 }
 
 stop_hbs_server() {
-    stop_hbs_generic hbs-server 9081
+    stop_hbs_generic hbs-server 9090
 }
 
 stop_hbs_web() {
-    stop_hbs_generic hbs-web 8081
+    stop_hbs_generic hbs-web 8090
 }
 
 stop_all() {
