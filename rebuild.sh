@@ -30,7 +30,7 @@ stop_hbs_generic() {
     echo Stopping $SERVER_NAME
     echo ---------------------------
     #ps -ef | grep $SERVER_NAME | grep -v grep | awk '{print $2}' | xargs sudo kill -9
-    curl http://localhost:$SERVER_PORT/actuator/shutdown
+    curl -X POST http://localhost:$SERVER_PORT/actuator/shutdown
     echo +++ OK
 }
 
@@ -122,12 +122,16 @@ validate_generic() {
     echo ---------------------------------
     echo
     if [ ! -f /opt/hbs/_staging_/$SERVER_NAME*.jar ]; then
-        echo "$SERVER_NAME jar file not found!"
+        echo "$SERVER_NAME JAR  >   NOT OK"
         exit 1
+    else
+        echo "$SERVER_NAME JAR  >   OK"
     fi
     if [ ! -f /opt/hbs/_staging_/run-$SERVER_NAME.sh ]; then
-        echo "$SERVER_NAME run script file not found!"
+        echo "$SERVER_NAME SH   >   NOT OK"
         exit 1
+    else
+        echo "$SERVER_NAME SH   >   OK"
     fi
 }
 
