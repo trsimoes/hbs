@@ -59,8 +59,8 @@ deploy_hbs_generic() {
     echo Deploying HBS $SERVER_NAME
     echo ---------------------------
     rm -rf /opt/hbs/$SERVER_NAME*
-    cp /opt/hbs/_staging_/$SERVER_NAME*.jar /opt/hbs/
-    cp /opt/hbs/_staging_/run-$SERVER_NAME.sh /opt/hbs/
+    cp /tmp/hbs/_staging_/$SERVER_NAME*.jar /opt/hbs/
+    cp /tmp/hbs/_staging_/run-$SERVER_NAME.sh /opt/hbs/
     chmod -R 766 /opt/hbs
     ln -sf /tmp/$SERVER_NAME.log /opt/hbs/$SERVER_NAME.log
     echo +++ OK
@@ -121,13 +121,13 @@ validate_generic() {
     echo Validating HBS $SERVER_NAME files
     echo ---------------------------------
     echo
-    if [ ! -f /opt/hbs/_staging_/$SERVER_NAME*.jar ]; then
+    if [ ! -f /tmp/hbs/_staging_/$SERVER_NAME*.jar ]; then
         echo "$SERVER_NAME JAR  >   NOT OK"
         exit 1
     else
         echo "$SERVER_NAME JAR  >   OK"
     fi
-    if [ ! -f /opt/hbs/_staging_/run-$SERVER_NAME.sh ]; then
+    if [ ! -f /tmp/hbs/_staging_/run-$SERVER_NAME.sh ]; then
         echo "$SERVER_NAME SH   >   NOT OK"
         exit 1
     else
