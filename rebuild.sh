@@ -29,8 +29,8 @@ stop_hbs_generic() {
     echo ---------------------------
     echo Stopping $SERVER_NAME
     echo ---------------------------
-    #ps -ef | grep $SERVER_NAME | grep -v grep | awk '{print $2}' | xargs sudo kill -9
-    curl -X POST http://localhost:$SERVER_PORT/actuator/shutdown
+    ps -ef | grep $SERVER_NAME | grep -v grep | awk '{print $2}' | xargs sudo kill -9
+    #curl -X POST http://localhost:$SERVER_PORT/actuator/shutdown
     echo +++ OK
 }
 
