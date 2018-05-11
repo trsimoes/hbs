@@ -156,7 +156,7 @@ update_all() {
     stop_all
     backup_current_application
     deploy_all
-    start_all
+    #start_all
 }
 
 update_hbs_server() {
@@ -164,7 +164,7 @@ update_hbs_server() {
     stop_hbs_server
     backup_current_application
     deploy_hbs_server
-    start_hbs_server
+    #start_hbs_server
 }
 
 update_hbs_web() {
@@ -172,7 +172,7 @@ update_hbs_web() {
     stop_hbs_web
     backup_current_application
     deploy_hbs_web
-    start_hbs_web
+    #start_hbs_web
 }
 
 # -------------------------------------------------------
