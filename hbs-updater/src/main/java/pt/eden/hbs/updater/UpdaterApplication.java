@@ -1,6 +1,5 @@
 package pt.eden.hbs.updater;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import pt.eden.hbs.bank.santander.SantanderSnapshot;
 import pt.eden.hbs.common.entity.Snapshot;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
