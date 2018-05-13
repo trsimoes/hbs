@@ -5,8 +5,8 @@ node {
       mvnHome = tool 'Maven3'
 
       // copy hbs.property files from server
-      sh 'scp pi@127.0.0.1://home/pi/hbs/hbs-server/src/main/resources/hbs.properties hbs-server/src/main/resources/hbs.properties'
-      sh 'scp pi@127.0.0.1://home/pi/hbs/hbs-web/src/main/resources/hbs.properties hbs-web/src/main/resources/hbs.properties'
+      sh 'scp pi@127.0.0.1://home/pi/hbs-files/hbs-server.properties hbs-server/src/main/resources/hbs.properties'
+      sh 'scp pi@127.0.0.1://home/pi/hbs-files/hbs-web.properties hbs-web/src/main/resources/hbs.properties'
    }
    stage('Build') {
       sh "'${mvnHome}/bin/mvn' clean package"
