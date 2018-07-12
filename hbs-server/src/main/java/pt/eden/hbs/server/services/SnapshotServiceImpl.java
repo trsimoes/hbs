@@ -9,6 +9,7 @@ import pt.eden.hbs.bank.edenred.EdenredSnapshot;
 import pt.eden.hbs.bank.exceptions.BankException;
 import pt.eden.hbs.bank.santander.SantanderBankService;
 import pt.eden.hbs.bank.santander.SantanderSnapshot;
+import pt.eden.hbs.bank.utils.SnapshotUtils;
 import pt.eden.hbs.common.entity.Snapshot;
 import pt.eden.hbs.configuration.ApplicationConfigurations;
 import pt.eden.hbs.server.entity.SnapshotEntity;
@@ -47,20 +48,11 @@ public class SnapshotServiceImpl implements SnapshotService {
         try {
             LOG.info("Getting Santander balance...");
             final SantanderSnapshot santanderSnapshot = this.santanderBankService.getCurrentDetails();
-            if (santanderSnapshot != null) {
-                LOG.info("Current Balance at " + santanderSnapshot.getCreateDateTime() + " is:");
-                LOG.info("\tAccount Balance:\t" + santanderSnapshot.getAccountBalance());
-                LOG.info("\tCredit Balance:\t\t" + santanderSnapshot.getCreditBalance());
-            } else {
-                LOG.warn("Could not fetch current balance.");
-            }
+            SnapshotUtils.printSantanderSnapshot(santanderSnapshot);
 
             LOG.info("Getting Edenred balance...");
             final EdenredSnapshot edenredSnapshot = this.edenredBankService.getCurrentDetails();
-            if (edenredSnapshot != null) {
-                LOG.info("Current Balance at " + edenredSnapshot.getCreateDateTime() + " is:");
-                LOG.info("\tAccount Balance:\t" + edenredSnapshot.getAccountBalance());
-            }
+            SnapshotUtils.printEdenredSnapshot(edenredSnapshot);
 
             LOG.info("Publishing results...");
             final Snapshot snapshot = convert(santanderSnapshot, edenredSnapshot);
