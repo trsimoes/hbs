@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>HBS - Home Banking Savings</title>
+
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Google Fonts -->
+    <link href="css/google-fonts.css" rel="stylesheet">
+
+    <!-- Custom Css -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="css/theme-red.css" rel="stylesheet" />
+
+    <!-- Bootstrap Core Css -->
+    <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+</head>
+
+<body class="theme-red">
+
+<!-- Page Loader -->
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="preloader">
+            <div class="spinner-layer pl-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <p>Please wait...</p>
+    </div>
+</div>
+<!-- #END# Page Loader -->
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+        </div>
+
+        <!-- Widgets -->
+        <div class="row clearfix">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-blue hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">equalizer</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">OVERALL BALANCE</div>
+                        <div id="overallBalanceDiv" class="number count-to" data-from="0" data-to="0" data-speed="1000" data-fresh-interval="20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-red hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">euro_symbol</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">CREDIT BALANCE</div>
+                        <div id="creditBalanceDiv" class="number count-to" data-from="0" data-to="0" data-speed="1000" data-fresh-interval="20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-orange hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">euro_symbol</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">ACCOUNT BALANCE</div>
+                        <div id="accountBalanceDiv" class="number count-to" data-to="0" data-from="0" data-speed="1000" data-fresh-interval="20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-light-green hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">restaurant</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">EUROTICKET BALANCE</div>
+                        <div id="euroticketBalanceDiv" class="number count-to" data-from="0" data-to="0" data-speed="1000" data-fresh-interval="20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-cyan hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">sync</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">LAST UPDATE</div>
+                        <div id="createDateBalanceDiv" class="number">n/a</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Jquery Core Js -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Jquery CountTo Plugin Js -->
+<script src="plugins/jquery-countto/jquery.countTo.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="plugins/node-waves/waves.js"></script>
+
+<!-- Custom Js -->
+<script src="js/admin.js"></script>
+<script src="js/index.js"></script>
+</body>
+
+</html>
