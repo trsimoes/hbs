@@ -15,7 +15,7 @@
     <artifactId>hbs-server</artifactId>
     <name>Home Banking Spending - Server</name>
     <description>Core implementation of the plataform</description>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

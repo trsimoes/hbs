@@ -37,7 +37,7 @@ public class EdenredBankServiceImpl extends AbstractBankService<EdenredSnapshot>
         EdenredSnapshot response = new EdenredSnapshot();
         response.setAccountBalance((float) 0);
         response.setCreateDateTime(LocalDateTime.now());
-        return super.getCurrentDetails();
+        return response;
     }
 
     @Override
