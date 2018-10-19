@@ -31,6 +31,16 @@ public class EdenredBankServiceImpl extends AbstractBankService<EdenredSnapshot>
     }
 
     @Override
+    public EdenredSnapshot getCurrentDetails() throws BankException {
+        LOG.warn("Edenred balance verification is temporarily disabled. Due to site reconstruction, this verification " +
+                "needs to be rebuilt.");
+        EdenredSnapshot response = new EdenredSnapshot();
+        response.setAccountBalance((float) 0);
+        response.setCreateDateTime(LocalDateTime.now());
+        return super.getCurrentDetails();
+    }
+
+    @Override
     protected Map<String, String> prepareFormPostAction(final Document document) throws IOException {
         Element loginform = document.getElementById("loginform");
         Elements inputElements = loginform.getElementsByTag("input");
